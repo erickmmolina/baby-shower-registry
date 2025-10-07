@@ -1,7 +1,11 @@
-import { Redis } from '@upstash/redis';
+import Redis from 'ioredis';
 
 // Crear cliente Redis usando REDIS_URL de Vercel
-const redis = Redis.fromEnv();
+const redis = new Redis(process.env.REDIS_URL, {
+  maxRetriesPerRequest: 3,
+  enableReadyCheck: false,
+  lazyConnect: true
+});
 
 export default async function handler(req, res) {
   // Habilitar CORS
@@ -32,7 +36,8 @@ export default async function handler(req, res) {
     }
 
     // Obtener todos los regalos
-    let gifts = await redis.get('gifts');
+    const giftsStr = await redis.get('gifts');
+    let gifts = giftsStr ? JSON.parse(giftsStr) : null;
     
     if (!gifts || !Array.isArray(gifts)) {
       return res.status(500).json({ error: 'Error al obtener los regalos' });
@@ -68,7 +73,7 @@ export default async function handler(req, res) {
     };
 
     // Guardar en Redis
-    await redis.set('gifts', gifts);
+    await redis.set('gifts', JSON.stringify(gifts));
 
     return res.status(200).json({ 
       success: true, 
