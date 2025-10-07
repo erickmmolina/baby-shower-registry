@@ -1,4 +1,10 @@
-import { kv } from '@vercel/kv';
+import { createClient } from '@vercel/kv';
+
+// Crear cliente KV con las variables de entorno
+const kv = createClient({
+  url: process.env.KV_REST_API_URL || process.env.STORAGE_URL || process.env.REDIS_URL,
+  token: process.env.KV_REST_API_TOKEN || process.env.STORAGE_REST_API_TOKEN || process.env.REDIS_REST_API_TOKEN
+});
 
 // Función para obtener todos los regalos
 export default async function handler(req, res) {
