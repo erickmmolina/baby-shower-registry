@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Baby Shower</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #e8f4f8 100%);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #ff9ec8;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: #636e72;
+            margin-bottom: 2rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ff9ec8 0%, #a8d8ea 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #dfe6e9;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-disponible {
+            background: #90ee90;
+            color: white;
+        }
+
+        .status-elegido {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-release {
+            background: #ffc107;
+            color: white;
+        }
+
+        .btn-release:hover {
+            background: #ff9800;
+        }
+
+        .btn-release:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .btn-refresh {
+            background: #ff9ec8;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-refresh:hover {
+            background: #ff7db8;
+        }
+
+        .claimed-info {
+            font-size: 0.9rem;
+            color: #636e72;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #636e72;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎁 Panel de Administración - Baby Shower</h1>
+        <p class="subtitle">Gestiona los regalos y ve quién ha seleccionado cada uno</p>
+
+        <button class="btn btn-refresh" onclick="loadGifts()">🔄 Actualizar</button>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalGifts">-</div>
+                <div class="stat-label">Total de regalos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="availableGifts">-</div>
+                <div class="stat-label">Disponibles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="claimedGifts">-</div>
+                <div class="stat-label">Ya elegidos</div>
+            </div>
+        </div>
+
+        <div id="loading" class="loading">Cargando datos...</div>
+
+        <table id="giftsTable" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Regalo</th>
+                    <th>Estado</th>
+                    <th>Elegido por</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="giftsBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+        let allGifts = [];
+
+        async function loadGifts() {
+            const loading = document.getElementById('loading');
+            const table = document.getElementById('giftsTable');
+
+            try {
+                loading.style.display = 'block';
+                table.style.display = 'none';
+
+                const response = await fetch(`${API_URL}/gifts`);
+                allGifts = await response.json();
+
+                updateStats();
+                displayGifts();
+
+                loading.style.display = 'none';
+                table.style.display = 'table';
+            } catch (error) {
+                console.error('Error:', error);
+                loading.innerHTML = '<p style="color: red;">Error al cargar los datos</p>';
+            }
+        }
+
+        function updateStats() {
+            const total = allGifts.length;
+            const claimed = allGifts.filter(g => g.status === 'Ya elegido').length;
+            const available = total - claimed;
+
+            document.getElementById('totalGifts').textContent = total;
+            document.getElementById('availableGifts').textContent = available;
+            document.getElementById('claimedGifts').textContent = claimed;
+        }
+
+        function displayGifts() {
+            const tbody = document.getElementById('giftsBody');
+
+            tbody.innerHTML = allGifts.map(gift => {
+                const isAvailable = gift.status === 'Disponible';
+                const statusClass = isAvailable ? 'status-disponible' : 'status-elegido';
+
+                let claimedInfo = '-';
+                if (!isAvailable && gift.claimedBy) {
+                    claimedInfo = `
+                        <div class="claimed-info">
+                            <strong>${gift.claimedBy.nombre} ${gift.claimedBy.apellido}</strong><br>
+                            📧 ${gift.claimedBy.email}<br>
+                            ${gift.claimedBy.telefono ? `📱 ${gift.claimedBy.telefono}<br>` : ''}
+                            📅 ${new Date(gift.claimedBy.fecha).toLocaleString('es-CL')}
+                        </div>
+                    `;
+                }
+
+                return `
+                    <tr>
+                        <td><strong>${gift.name}</strong></td>
+                        <td><span class="status-badge ${statusClass}">${gift.status}</span></td>
+                        <td>${claimedInfo}</td>
+                        <td>
+                            <button 
+                                class="btn btn-release" 
+                                onclick="releaseGift(${gift.id})"
+                                ${isAvailable ? 'disabled' : ''}
+                            >
+                                Liberar
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function releaseGift(giftId) {
+            if (!confirm('¿Estás seguro de que quieres liberar este regalo?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/release`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ giftId })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Regalo liberado exitosamente');
+                    loadGifts();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al liberar el regalo');
+            }
+        }
+
+        // Cargar datos al iniciar
+        document.addEventListener('DOMContentLoaded', loadGifts);
+    </script>
+</body>
+
+</html>
