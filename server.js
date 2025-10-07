@@ -207,6 +207,47 @@ app.post('/api/update-images', async (req, res) => {
     }
 });
 
+// POST - Actualizar datos de un regalo
+app.post('/api/update-gift', async (req, res) => {
+    const { giftId, name, description, link1, link2 } = req.body;
+
+    if (giftId === undefined || giftId === null) {
+        return res.status(400).json({ error: 'ID de regalo requerido.' });
+    }
+
+    if (!name || !name.trim()) {
+        return res.status(400).json({ error: 'El nombre del regalo es obligatorio.' });
+    }
+
+    const gifts = await readGifts();
+    const giftIndex = gifts.findIndex(g => g.id === giftId);
+
+    if (giftIndex === -1) {
+        return res.status(404).json({ error: 'Regalo no encontrado.' });
+    }
+
+    // Actualizar los datos del regalo
+    gifts[giftIndex] = {
+        ...gifts[giftIndex],
+        name: name.trim(),
+        description: description ? description.trim() : '',
+        link1: link1 ? link1.trim() : '',
+        link2: link2 ? link2.trim() : ''
+    };
+
+    if (await saveGifts(gifts)) {
+        res.json({
+            success: true,
+            message: 'Regalo actualizado exitosamente.',
+            gift: gifts[giftIndex]
+        });
+    } else {
+        res.status(500).json({
+            error: 'Error al actualizar el regalo.'
+        });
+    }
+});
+
 // Ruta principal - servir el HTML
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));

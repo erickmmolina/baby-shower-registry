@@ -449,6 +449,13 @@
                                     🖼️ Imágenes
                                 </button>
                                 <button 
+                                    class="btn btn-primary" 
+                                    onclick="openEditModal(${gift.id})"
+                                    style="background: #a8dadc; padding: 0.5rem 1rem; font-size: 0.9rem;"
+                                >
+                                    ✏️ Editar
+                                </button>
+                                <button 
                                     class="btn btn-release" 
                                     onclick="releaseGift(${gift.id})"
                                     ${isAvailable ? 'disabled' : ''}
@@ -670,6 +677,76 @@
             }
         }
 
+        // Editar regalo
+        let currentGiftForEdit = null;
+
+        function openEditModal(giftId) {
+            currentGiftForEdit = allGifts.find(g => g.id === giftId);
+            if (!currentGiftForEdit) return;
+
+            document.getElementById('editGiftName').value = currentGiftForEdit.name || '';
+            document.getElementById('editGiftDescription').value = currentGiftForEdit.description || '';
+            document.getElementById('editGiftLink1').value = currentGiftForEdit.link1 || '';
+            document.getElementById('editGiftLink2').value = currentGiftForEdit.link2 || '';
+            
+            document.getElementById('editModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+            currentGiftForEdit = null;
+        }
+
+        async function saveGiftEdit(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('editGiftName').value.trim();
+            const description = document.getElementById('editGiftDescription').value.trim();
+            const link1 = document.getElementById('editGiftLink1').value.trim();
+            const link2 = document.getElementById('editGiftLink2').value.trim();
+
+            if (!name) {
+                alert('El nombre del regalo es obligatorio');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/update-gift`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        giftId: currentGiftForEdit.id,
+                        name,
+                        description,
+                        link1: link1 || '',
+                        link2: link2 || ''
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('¡Regalo actualizado exitosamente!');
+                    closeEditModal();
+                    loadGifts();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al actualizar el regalo');
+            }
+        }
+
+        // Cerrar modal de edición al hacer clic fuera
+        document.getElementById('editModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'editModal') {
+                closeEditModal();
+            }
+        });
+
         // Cargar datos al iniciar
         document.addEventListener('DOMContentLoaded', loadGifts);
     </script>
@@ -705,6 +782,45 @@
                 <button class="btn btn-secondary" onclick="closeImagesModal()">Cancelar</button>
                 <button class="btn btn-primary" onclick="saveImages()">💾 Guardar Cambios</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar regalo -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            <h2 style="color: #6FB1E8; margin-bottom: 1.5rem;">✏️ Editar Regalo</h2>
+
+            <form id="editGiftForm" onsubmit="saveGiftEdit(event)">
+                <div class="form-group">
+                    <label for="editGiftName">Nombre del Regalo *</label>
+                    <input type="text" id="editGiftName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editGiftDescription">Descripción</label>
+                    <textarea id="editGiftDescription" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editGiftLink1">Link de Compra 1</label>
+                    <input type="url" id="editGiftLink1" placeholder="https://...">
+                </div>
+
+                <div class="form-group">
+                    <label for="editGiftLink2">Link de Compra 2</label>
+                    <input type="url" id="editGiftLink2" placeholder="https://...">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        💾 Guardar Cambios
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </body>
