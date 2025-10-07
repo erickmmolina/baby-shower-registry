@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +13,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #ffeef8 0%, #e8f4f8 100%);
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             padding: 2rem;
             min-height: 100vh;
         }
@@ -28,14 +27,86 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
         }
 
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-left {
+            flex: 1;
+        }
+
         h1 {
-            color: #ff9ec8;
-            margin-bottom: 1rem;
+            color: #6FB1E8;
+            margin-bottom: 0.5rem;
         }
 
         .subtitle {
             color: #636e72;
-            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #6FB1E8;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5A9FD4;
+            transform: translateY(-2px);
+        }
+
+        .btn-home {
+            background: #89CFF0;
+            color: white;
+            margin-right: 1rem;
+        }
+
+        .btn-home:hover {
+            background: #6FB1E8;
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-danger:hover {
+            background: #ee5a52;
+        }
+
+        .btn-release {
+            background: #ffc107;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-release:hover {
+            background: #ff9800;
+        }
+
+        .btn-release:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
         }
 
         .stats {
@@ -46,7 +117,7 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #ff9ec8 0%, #a8d8ea 100%);
+            background: linear-gradient(135deg, #6FB1E8 0%, #89CFF0 100%);
             color: white;
             padding: 1.5rem;
             border-radius: 12px;
@@ -59,19 +130,13 @@
             margin-bottom: 0.5rem;
         }
 
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 2rem;
         }
 
-        th,
-        td {
+        th, td {
             padding: 1rem;
             text-align: left;
             border-bottom: 1px solid #dfe6e9;
@@ -105,38 +170,10 @@
             color: white;
         }
 
-        .btn {
-            padding: 0.5rem 1rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-release {
-            background: #ffc107;
-            color: white;
-        }
-
-        .btn-release:hover {
-            background: #ff9800;
-        }
-
-        .btn-release:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .btn-refresh {
-            background: #ff9ec8;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .btn-refresh:hover {
-            background: #ff7db8;
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #636e72;
         }
 
         .claimed-info {
@@ -144,20 +181,130 @@
             color: #636e72;
         }
 
-        .loading {
-            text-align: center;
-            padding: 3rem;
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            padding: 2rem;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
             color: #636e72;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2d3436;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #6FB1E8;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #2d3436;
+        }
+
+        .btn-secondary:hover {
+            background: #dfe6e9;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
         }
     </style>
 </head>
-
 <body>
     <div class="container">
-        <h1>🎁 Panel de Administración - Baby Shower</h1>
-        <p class="subtitle">Gestiona los regalos y ve quién ha seleccionado cada uno</p>
+        <div class="header-actions">
+            <div class="header-left">
+                <h1>🎁 Panel de Administración - Baby Shower</h1>
+                <p class="subtitle">Gestiona los regalos y ve quién ha seleccionado cada uno</p>
+            </div>
+            <div>
+                <button class="btn btn-home" onclick="window.location.href='/'">
+                    🏠 Ir al Home
+                </button>
+                <button class="btn btn-primary" onclick="openAddGiftModal()">
+                    ➕ Agregar Regalo
+                </button>
+            </div>
+        </div>
 
-        <button class="btn btn-refresh" onclick="loadGifts()">🔄 Actualizar</button>
+        <button class="btn btn-primary" onclick="loadGifts()" style="margin-bottom: 1rem;">
+            🔄 Actualizar
+        </button>
 
         <div class="stats" id="stats">
             <div class="stat-card">
@@ -187,6 +334,45 @@
             </thead>
             <tbody id="giftsBody"></tbody>
         </table>
+    </div>
+
+    <!-- Modal para agregar regalo -->
+    <div id="addGiftModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAddGiftModal()">&times;</button>
+            <h2 style="color: #6FB1E8; margin-bottom: 1.5rem;">Agregar Nuevo Regalo</h2>
+            
+            <form id="addGiftForm" onsubmit="addGift(event)">
+                <div class="form-group">
+                    <label for="giftName">Nombre del Regalo *</label>
+                    <input type="text" id="giftName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="giftDescription">Descripción (opcional)</label>
+                    <textarea id="giftDescription" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="giftLink1">Link de Compra 1 (opcional)</label>
+                    <input type="url" id="giftLink1" placeholder="https://...">
+                </div>
+                
+                <div class="form-group">
+                    <label for="giftLink2">Link de Compra 2 (opcional)</label>
+                    <input type="url" id="giftLink2" placeholder="https://...">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddGiftModal()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        Agregar Regalo
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -250,13 +436,21 @@
                         <td><span class="status-badge ${statusClass}">${gift.status}</span></td>
                         <td>${claimedInfo}</td>
                         <td>
-                            <button 
-                                class="btn btn-release" 
-                                onclick="releaseGift(${gift.id})"
-                                ${isAvailable ? 'disabled' : ''}
-                            >
-                                Liberar
-                            </button>
+                            <div class="action-buttons">
+                                <button 
+                                    class="btn btn-release" 
+                                    onclick="releaseGift(${gift.id})"
+                                    ${isAvailable ? 'disabled' : ''}
+                                >
+                                    Liberar
+                                </button>
+                                <button 
+                                    class="btn btn-danger" 
+                                    onclick="deleteGift(${gift.id}, '${gift.name.replace(/'/g, "\\'")}')"
+                                >
+                                    Eliminar
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -291,9 +485,94 @@
             }
         }
 
+        async function deleteGift(giftId, giftName) {
+            if (!confirm(`¿Estás seguro de que quieres ELIMINAR el regalo "${giftName}"?\n\nEsta acción no se puede deshacer.`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/delete-gift`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ giftId })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Regalo eliminado exitosamente');
+                    loadGifts();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al eliminar el regalo');
+            }
+        }
+
+        function openAddGiftModal() {
+            document.getElementById('addGiftModal').classList.add('active');
+            document.getElementById('addGiftForm').reset();
+        }
+
+        function closeAddGiftModal() {
+            document.getElementById('addGiftModal').classList.remove('active');
+        }
+
+        async function addGift(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('giftName').value.trim();
+            const description = document.getElementById('giftDescription').value.trim();
+            const link1 = document.getElementById('giftLink1').value.trim();
+            const link2 = document.getElementById('giftLink2').value.trim();
+
+            if (!name) {
+                alert('Por favor ingresa el nombre del regalo');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/add-gift`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        description,
+                        link1: link1 || null,
+                        link2: link2 || null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('¡Regalo agregado exitosamente!');
+                    closeAddGiftModal();
+                    loadGifts();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al agregar el regalo');
+            }
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('addGiftModal').addEventListener('click', (e) => {
+            if (e.target.id === 'addGiftModal') {
+                closeAddGiftModal();
+            }
+        });
+
         // Cargar datos al iniciar
         document.addEventListener('DOMContentLoaded', loadGifts);
     </script>
 </body>
-
 </html>
