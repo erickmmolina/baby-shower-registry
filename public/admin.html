@@ -300,6 +300,9 @@
                 <button class="btn btn-home" onclick="window.location.href='/'">
                     🏠 Ir al Home
                 </button>
+                <button class="btn btn-primary" onclick="openEventModal()" style="background: #a8dadc; margin-right: 1rem;">
+                    📅 Editar Evento
+                </button>
                 <button class="btn btn-primary" onclick="openAddGiftModal()">
                     ➕ Agregar Regalo
                 </button>
@@ -752,6 +755,72 @@
             }
         });
 
+        // Gestionar evento
+        async function openEventModal() {
+            try {
+                const response = await fetch(`${API_URL}/event`);
+                const eventData = await response.json();
+
+                document.getElementById('eventDateInput').value = eventData.date || '';
+                document.getElementById('eventTimeInput').value = eventData.time || '';
+                document.getElementById('eventLocationInput').value = eventData.location || '';
+                document.getElementById('eventMapLinkInput').value = eventData.mapLink || '';
+                document.getElementById('eventDressCodeInput').value = eventData.dressCode || '';
+                document.getElementById('eventThemeInput').value = eventData.theme || '';
+
+                document.getElementById('eventModal').classList.add('active');
+            } catch (error) {
+                console.error('Error cargando evento:', error);
+                alert('Error al cargar la información del evento');
+            }
+        }
+
+        function closeEventModal() {
+            document.getElementById('eventModal').classList.remove('active');
+        }
+
+        async function saveEvent(e) {
+            e.preventDefault();
+
+            const eventData = {
+                date: document.getElementById('eventDateInput').value.trim(),
+                time: document.getElementById('eventTimeInput').value.trim(),
+                location: document.getElementById('eventLocationInput').value.trim(),
+                mapLink: document.getElementById('eventMapLinkInput').value.trim(),
+                dressCode: document.getElementById('eventDressCodeInput').value.trim(),
+                theme: document.getElementById('eventThemeInput').value.trim()
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/event`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(eventData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('¡Información del evento actualizada exitosamente!');
+                    closeEventModal();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar la información del evento');
+            }
+        }
+
+        // Cerrar modal de evento al hacer clic fuera
+        document.getElementById('eventModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'eventModal') {
+                closeEventModal();
+            }
+        });
+
         // Cargar datos al iniciar
         document.addEventListener('DOMContentLoaded', loadGifts);
     </script>
@@ -835,6 +904,55 @@
                     </button>
                     <button type="submit" class="btn btn-primary">
                         💾 Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para editar evento -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeEventModal()">&times;</button>
+            <h2 style="color: #6FB1E8; margin-bottom: 1.5rem;">📅 Editar Información del Evento</h2>
+
+            <form id="eventForm" onsubmit="saveEvent(event)">
+                <div class="form-group">
+                    <label for="eventDateInput">Fecha</label>
+                    <input type="text" id="eventDateInput" placeholder="Ej: Sábado 26 de Octubre, 2025" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventTimeInput">Hora</label>
+                    <input type="text" id="eventTimeInput" placeholder="Ej: 17:00 hrs" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventLocationInput">Lugar</label>
+                    <input type="text" id="eventLocationInput" placeholder="Ej: Casa de los Abuelos" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventMapLinkInput">Link de Google Maps</label>
+                    <input type="url" id="eventMapLinkInput" placeholder="https://maps.google.com/?q=..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventDressCodeInput">Dress Code</label>
+                    <input type="text" id="eventDressCodeInput" placeholder="Ej: Casual y cómodo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventThemeInput">Temática</label>
+                    <input type="text" id="eventThemeInput" placeholder="Ej: Tonos pastel 💙" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEventModal()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        💾 Guardar Evento
                     </button>
                 </div>
             </form>

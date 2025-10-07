@@ -38,9 +38,39 @@ const giftEmojis = {
 // Inicializar app
 document.addEventListener('DOMContentLoaded', () => {
     loadGifts();
+    loadEventInfo();
     setupFilters();
     setupModal();
 });
+
+// Cargar información del evento
+async function loadEventInfo() {
+    try {
+        const response = await fetch(`${API_URL}/event`);
+        if (!response.ok) throw new Error('Error al cargar información del evento');
+        
+        const eventData = await response.json();
+        
+        // Actualizar el DOM con la información del evento
+        document.getElementById('eventDate').textContent = eventData.date || 'Por confirmar';
+        document.getElementById('eventTime').textContent = eventData.time || '--:--';
+        document.getElementById('eventLocation').textContent = eventData.location || 'Por confirmar';
+        document.getElementById('eventMapLink').href = eventData.mapLink || '#';
+        document.getElementById('eventDressCode').textContent = eventData.dressCode || 'Por confirmar';
+        document.getElementById('eventTheme').textContent = eventData.theme || '--';
+        
+        // Guardar datos para el calendario
+        window.eventData = eventData;
+    } catch (error) {
+        console.error('Error cargando evento:', error);
+        document.getElementById('eventDate').textContent = 'Sábado 26 de Octubre, 2025';
+        document.getElementById('eventTime').textContent = '17:00 hrs';
+        document.getElementById('eventLocation').textContent = 'Casa de los Abuelos';
+        document.getElementById('eventMapLink').href = 'https://maps.google.com/?q=-33.4489,-70.6693';
+        document.getElementById('eventDressCode').textContent = 'Casual y cómodo';
+        document.getElementById('eventTheme').textContent = 'Tonos pastel 💙';
+    }
+}
 
 // Cargar regalos desde la API
 async function loadGifts() {
@@ -361,9 +391,32 @@ function goToSlide(giftId, index) {
     });
 }
 
+// Función para agregar evento al calendario
+function addToCalendar() {
+    // Datos del evento
+    const eventDetails = {
+        title: 'Baby Shower de Nain',
+        description: 'Ven a celebrar la llegada de Nain con nosotros',
+        location: 'Casa de los Abuelos',
+        startDate: '2025-10-26T17:00:00',
+        endDate: '2025-10-26T21:00:00'
+    };
+
+    // Convertir fechas a formato UTC
+    const startDate = new Date(eventDetails.startDate).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    const endDate = new Date(eventDetails.endDate).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+    // Crear URL de Google Calendar
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventDetails.title)}&details=${encodeURIComponent(eventDetails.description)}&location=${encodeURIComponent(eventDetails.location)}&dates=${startDate}/${endDate}`;
+
+    // Abrir en nueva ventana
+    window.open(googleCalendarUrl, '_blank');
+}
+
 // Hacer funciones globales para uso en HTML
 window.openClaimModal = openClaimModal;
 window.closeModal = closeModal;
 window.changeSlide = changeSlide;
 window.goToSlide = goToSlide;
+window.addToCalendar = addToCalendar;
 

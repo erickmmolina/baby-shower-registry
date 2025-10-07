@@ -321,6 +321,62 @@ app.post('/api/update-gift', async (req, res) => {
     }
 });
 
+// GET - Obtener información del evento
+app.get('/api/event', async (req, res) => {
+    try {
+        if (USE_REDIS && redis) {
+            const eventStr = await redis.get('event');
+            if (eventStr) {
+                return res.json(JSON.parse(eventStr));
+            }
+        } else {
+            const EVENT_FILE = path.join(__dirname, 'event.json');
+            if (fs.existsSync(EVENT_FILE)) {
+                const data = fs.readFileSync(EVENT_FILE, 'utf8');
+                return res.json(JSON.parse(data));
+            }
+        }
+        
+        // Valores por defecto
+        res.json({
+            date: 'Sábado 26 de Octubre, 2025',
+            time: '17:00 hrs',
+            location: 'Casa de los Abuelos',
+            mapLink: 'https://maps.google.com/?q=-33.4489,-70.6693',
+            dressCode: 'Casual y cómodo',
+            theme: 'Tonos pastel 💙'
+        });
+    } catch (error) {
+        console.error('Error obteniendo evento:', error);
+        res.status(500).json({ error: 'Error al obtener información del evento' });
+    }
+});
+
+// POST - Actualizar información del evento
+app.post('/api/event', async (req, res) => {
+    const { date, time, location, mapLink, dressCode, theme } = req.body;
+
+    try {
+        const eventData = { date, time, location, mapLink, dressCode, theme };
+        
+        if (USE_REDIS && redis) {
+            await redis.set('event', JSON.stringify(eventData));
+        } else {
+            const EVENT_FILE = path.join(__dirname, 'event.json');
+            fs.writeFileSync(EVENT_FILE, JSON.stringify(eventData, null, 2), 'utf8');
+        }
+
+        res.json({
+            success: true,
+            message: 'Información del evento actualizada',
+            event: eventData
+        });
+    } catch (error) {
+        console.error('Error actualizando evento:', error);
+        res.status(500).json({ error: 'Error al actualizar el evento' });
+    }
+});
+
 // Ruta principal - servir el HTML
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));

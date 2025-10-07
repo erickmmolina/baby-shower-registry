@@ -115,6 +115,51 @@
         </div>
     </main>
 
+    <!-- Sección de Detalles del Evento -->
+    <section class="event-section">
+        <div class="event-bg"></div>
+        <div class="event-container">
+            <div class="event-content">
+                <h2 class="event-title">🎉 ¡Ven a Celebrar Conmigo!</h2>
+                <p class="event-description">
+                    Mis papás prepararon una tarde llena de amor, juegos y muchas risas.<br>
+                    ¡Te espero para celebrar juntos!
+                </p>
+
+                <div class="event-details">
+                    <div class="event-detail-card">
+                        <div class="event-icon">📅</div>
+                        <h3>Fecha y Hora</h3>
+                        <p id="eventDate">Cargando...</p>
+                        <p class="event-time" id="eventTime">--:--</p>
+                    </div>
+
+                    <div class="event-detail-card">
+                        <div class="event-icon">📍</div>
+                        <h3>Lugar</h3>
+                        <p id="eventLocation">Cargando...</p>
+                        <a href="#" id="eventMapLink" target="_blank" class="event-map-link">
+                            Ver en Google Maps
+                        </a>
+                    </div>
+
+                    <div class="event-detail-card">
+                        <div class="event-icon">👔</div>
+                        <h3>Dress Code</h3>
+                        <p id="eventDressCode">Cargando...</p>
+                        <p class="event-theme" id="eventTheme">--</p>
+                    </div>
+                </div>
+
+                <div class="event-actions">
+                    <button class="btn btn-calendar" onclick="addToCalendar()">
+                        📆 Agregar al Calendario
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Modal para seleccionar regalo -->
     <div id="modal" class="modal">
         <div class="modal-content">
