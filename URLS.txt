@@ -1,12 +1,16 @@
 🎁 URLS IMPORTANTES - BABY SHOWER REGISTRY
 ==========================================
 
-📱 PARA LOS INVITADOS:
+🌐 PRODUCCIÓN:
+   Para invitados: https://nain-bravo.vercel.app
+   Panel Admin:    https://nain-bravo.vercel.app/admin
+   
+📱 LOCAL (desarrollo):
    http://localhost:3000
    (Esta es la página principal donde seleccionan regalos)
 
-👨‍💼 PANEL DE ADMINISTRACIÓN:
-   http://localhost:3000/admin.html
+👨‍💼 PANEL DE ADMINISTRACIÓN LOCAL:
+   http://localhost:3000/admin
    (Aquí puedes ver quién eligió cada regalo y liberar regalos)
 
 🔧 API REST:
