@@ -207,6 +207,77 @@ app.post('/api/update-images', async (req, res) => {
     }
 });
 
+// POST - Agregar un nuevo regalo
+app.post('/api/add-gift', async (req, res) => {
+    const { name, description, link1, link2 } = req.body;
+
+    if (!name || !name.trim()) {
+        return res.status(400).json({ error: 'El nombre del regalo es obligatorio.' });
+    }
+
+    const gifts = await readGifts();
+    
+    // Obtener el ID más alto y sumar 1
+    const maxId = gifts.length > 0 ? Math.max(...gifts.map(g => g.id)) : -1;
+    const newId = maxId + 1;
+
+    // Crear nuevo regalo
+    const newGift = {
+        id: newId,
+        name: name.trim(),
+        description: description ? description.trim() : '',
+        link1: link1 ? link1.trim() : '',
+        link2: link2 ? link2.trim() : '',
+        status: 'Disponible',
+        claimedBy: null,
+        images: []
+    };
+
+    gifts.push(newGift);
+
+    if (await saveGifts(gifts)) {
+        res.json({
+            success: true,
+            message: 'Regalo agregado exitosamente.',
+            gift: newGift
+        });
+    } else {
+        res.status(500).json({
+            error: 'Error al agregar el regalo.'
+        });
+    }
+});
+
+// POST - Eliminar un regalo
+app.post('/api/delete-gift', async (req, res) => {
+    const { giftId } = req.body;
+
+    if (giftId === undefined || giftId === null) {
+        return res.status(400).json({ error: 'ID de regalo requerido.' });
+    }
+
+    const gifts = await readGifts();
+    const giftIndex = gifts.findIndex(g => g.id === giftId);
+
+    if (giftIndex === -1) {
+        return res.status(404).json({ error: 'Regalo no encontrado.' });
+    }
+
+    // Eliminar el regalo
+    gifts.splice(giftIndex, 1);
+
+    if (await saveGifts(gifts)) {
+        res.json({
+            success: true,
+            message: 'Regalo eliminado exitosamente.'
+        });
+    } else {
+        res.status(500).json({
+            error: 'Error al eliminar el regalo.'
+        });
+    }
+});
+
 // POST - Actualizar datos de un regalo
 app.post('/api/update-gift', async (req, res) => {
     const { giftId, name, description, link1, price1, link2, price2 } = req.body;

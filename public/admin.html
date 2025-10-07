@@ -481,12 +481,11 @@
             }
 
             try {
-                const response = await fetch(`${API_URL}/release`, {
+                const response = await fetch(`${API_URL}/gifts/${giftId}/release`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ giftId })
+                    }
                 });
 
                 const data = await response.json();

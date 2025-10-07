@@ -288,13 +288,12 @@ async function claimGift() {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Reservando...';
 
-        const response = await fetch(`${API_URL}/claim`, {
+        const response = await fetch(`${API_URL}/gifts/${giftId}/claim`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                giftId,
                 nombre,
                 apellido,
                 email,
