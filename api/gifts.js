@@ -1,0 +1,276 @@
+import { kv } from '@vercel/kv';
+
+// Función para obtener todos los regalos
+export default async function handler(req, res) {
+  // Habilitar CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method === 'GET') {
+    try {
+      // Obtener todos los regalos de Vercel KV
+      let gifts = await kv.get('gifts');
+      
+      // Si no hay datos, inicializar con los datos por defecto
+      if (!gifts) {
+        gifts = await initializeGifts();
+      }
+      
+      return res.status(200).json(gifts);
+    } catch (error) {
+      console.error('Error obteniendo regalos:', error);
+      return res.status(500).json({ error: 'Error al obtener los regalos' });
+    }
+  }
+
+  return res.status(405).json({ error: 'Método no permitido' });
+}
+
+// Función para inicializar los datos
+async function initializeGifts() {
+  const defaultGifts = [
+    {
+      "id": 0,
+      "name": "BAÑERA CON ACCESORIOS",
+      "description": "",
+      "link1": "https://www.instagram.com/reel/DJmbGp4tn5G/?utm_source=ig_web_copy_link&igsh=ZHdjajA4dDV0aXpy",
+      "link2": "https://www.carestino.cl/producto/tina-plegable-con-soporte-amalfi-50l-gris/",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 1,
+      "name": "COCHE",
+      "description": "",
+      "link1": "https://infanti.cl/products/coches-travel-system-epic-6g-532",
+      "link2": "https://www.carestino.cl/producto/coche-kiev-accesorios-azul/",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 2,
+      "name": "PAÑALERA",
+      "description": "",
+      "link1": "https://www.carestino.cl/producto/mochila-maternal-berna-negro/",
+      "link2": "https://infanti.cl/collections/bolsos-y-mochilas/products/mochila-mudador-backpack-carbono",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 3,
+      "name": "COJIN DE LACTANCIA",
+      "description": "",
+      "link1": "https://articulo.mercadolibre.cl/MLC-2905707040-almohada-de-lactancia-almohada-de-maternidad-almohada-de-beb-_JM",
+      "link2": "https://www.mercadolibre.cl/almohada-cojin-de-lactancia-para-bebe-amamantar-antirreflujo-color-blanco-liso/p/MLC52286244",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 4,
+      "name": "MONITOR DE BEBE",
+      "description": "",
+      "link1": "https://www.falabella.com/falabella-cl/product/135764635/Almohada-De-Lactancia-Para-Mama-Y-Bebe-Cojin-Comodidad/135764636",
+      "link2": "https://www.mercadolibre.cl/monitor-bebe-camara-ip-seguridad-vigilancia-ninos-wifi-video-llamadas-deteccion-de-movimiento-y-llanto/p/MLC40491252",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 5,
+      "name": "CARRITO ORGANIZADOR",
+      "description": "",
+      "link1": "https://www.mercadolibre.cl/carrito-plegable-organizador-estante-con-ruedas/up/MLCU3469916770",
+      "link2": "https://www.ikea.com/cl/es/p/nissafors-carro-negro-20399777/",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 6,
+      "name": "FULAR TELA PORTABEBE ERGONÓMICO",
+      "description": "",
+      "link1": "https://articulo.mercadolibre.cl/MLC-3100749064-fular-tela-portabebe-ergonomico-_JM",
+      "link2": "https://www.mercadolibre.cl/fular-portabebe-semielasticado-100-algodon-amamantas-negro/up/MLCU332192361",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 7,
+      "name": "KIT CON TERMOMETRO",
+      "description": "",
+      "link1": "https://babyelephant.cl/products/kit-de-cuidado-personal-para-bebe-azul",
+      "link2": "https://www.mercadolibre.cl/kit-de-aseo-y-salud-deluxe-para-bebes-safety-1st-celeste/up/MLCU359532532",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 8,
+      "name": "CAMBIADOR PORTATIL IMPERMEABLE",
+      "description": "",
+      "link1": "https://www.mercadolibre.cl/mudador-cambiador-plegable-y-portatil-para-cambiar-panales-color-azul/p/MLC45465604",
+      "link2": "https://www.mercadolibre.cl/mudador-portatil-impermeable-bebe-cambiador-plegable-color-gris-liso/p/MLC52256392",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 9,
+      "name": "GYM BEBE",
+      "description": "",
+      "link1": "https://www.mercadolibre.cl/tapete-gymini-black-white-magical-tales-tiny-love/p/MLC26406126",
+      "link2": "https://www.mercadolibre.cl/tapete-gimnasio-y-corral-juguete-para-bebe-con-30-pelotas-color-leon/p/MLC27714166",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 10,
+      "name": "BIBERONES",
+      "description": "",
+      "link1": "https://infanti.cl/collections/mamadera-y-tetinas/products/set-natural-3-0-basico-125-260-330ml-cepillo",
+      "link2": "https://infanti.cl/collections/mamadera-y-tetinas/products/set-recien-nacido-easy-star-crema-mam",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 11,
+      "name": "SILLA MESEDORA",
+      "description": "",
+      "link1": "https://www.carestino.cl/producto/silla-mecedora-alba-gris-topo/",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 12,
+      "name": "ALFOMBRA DE JUEGO",
+      "description": "",
+      "link1": "https://www.carestino.cl/producto/alfombra-antigolpes-reversible-120x180-oso/",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 13,
+      "name": "LUZ NOCTURNA",
+      "description": "",
+      "link1": "https://infanti.cl/collections/moviles-y-espantacuco/products/espantacuco-luces-y-sonido",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 14,
+      "name": "ASPIRADOR NASAL",
+      "description": "",
+      "link1": "https://www.mercadolibre.cl/aspirador-nasal-para-bebe-saca-mocos-electrico-limpiador-color-blanco/p/MLC28467235",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 15,
+      "name": "CORRAL PARA BEBE DE SEGURIDAD INCLUYE ACCESORIOS",
+      "description": "",
+      "link1": "https://babyelephant.cl/products/corral-de-seguridad-para-bebe-incluye-accesorios-150x180cm",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 16,
+      "name": "EXTRACTOR DE LECHE",
+      "description": "",
+      "link1": "https://articulo.mercadolibre.cl/MLC-2829970822-bombas-de-respiracion-electricas-portatiles-e-invisibles-de-_JM",
+      "link2": "https://www.carestino.cl/producto/extractor-de-leche-electrico-con-mamadera-gris/",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 17,
+      "name": "ROPA DE COLECHO",
+      "description": "",
+      "link1": "https://infanti.cl/collections/ropa-de-cuna-y-cojin/products/set-cuna-colecho-celeste-infanti",
+      "link2": "https://www.mercadolibre.cl/set-cuna-colecho--cobertor--sabanas--cojines--trenza-1mt/up/MLCU3399863016",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 18,
+      "name": "BOX JUGUETES SENSORIALES MONTESSORI BEBE, REGALO BABY SHOWER",
+      "description": "",
+      "link1": "https://articulo.mercadolibre.cl/MLC-2924101352-box-juguetes-sensoriales-montessori-bebe-regalo-baby-shower-_JM",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 19,
+      "name": "SET 0-3 Meses (15 Piezas)",
+      "description": "",
+      "link1": "https://articulo.mercadolibre.cl/MLC-2639538918-ajuar-set-de-nacimiento-bebe-nino-0-3-meses-15-piezas-_JM",
+      "link2": "https://articulo.mercadolibre.cl/MLC-2732032634-pack-ajuar-bebe-nina-nino-unisex-15-piezas-_JM",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 20,
+      "name": "BOX JUGUETES SENSORIALES BEBE REGALO BABY SHOWER",
+      "description": "",
+      "link1": "https://articulo.mercadolibre.cl/MLC-2925601874-box-juguetes-sensoriales-montessori-bebe-regalo-baby-shower-_JM",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 21,
+      "name": "KIT ALIMENTACIÓN SILICONA BEBÉ COMER, REGALO BABY SHOWER",
+      "description": "",
+      "link1": "https://articulo.mercadolibre.cl/MLC-1558223455-kit-alimentacion-silicona-bebe-comer-regalo-baby-shower-_JM",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 22,
+      "name": "SET DE CUIDADOS",
+      "description": "",
+      "link1": "https://www.mercadolibre.cl/set-de-cuidado-para-bebes-simonds-recien-nacido-varios-x-5/p/MLC22834955",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 23,
+      "name": "SET BAMBINO",
+      "description": "",
+      "link1": "https://www.mercadolibre.cl/baby-gift-bambino-celeste-oso-nino/up/MLCU2775606320",
+      "link2": "https://www.mercadolibre.cl/baby-gift-bambino-set-5-piezas-blanco-oso-nino/up/MLCU2780155074",
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 24,
+      "name": "SET DE BODYS",
+      "description": "",
+      "link1": "https://infanti.cl/products/quintupack-body-baby-animals-nino-algodon",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    },
+    {
+      "id": 25,
+      "name": "CHUPON",
+      "description": "",
+      "link1": "https://infanti.cl/collections/chupete-y-porta-chupete/products/chupete-soothie-0-3m-2-unidades-azul-azul-claro",
+      "link2": null,
+      "status": "Disponible",
+      "claimedBy": null
+    }
+  ];
+
+  await kv.set('gifts', defaultGifts);
+  return defaultGifts;
+}
+

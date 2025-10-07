@@ -1,0 +1,26 @@
+{
+    "name": "baby-shower-registry",
+    "version": "1.0.0",
+    "description": "Sistema de registro de regalos para baby shower",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "vercel dev",
+        "build": "node scripts/init-kv.js"
+    },
+    "keywords": [
+        "baby shower",
+        "registry",
+        "gifts"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.18.2",
+        "cors": "^2.8.5",
+        "@vercel/kv": "^1.0.1"
+    },
+    "devDependencies": {
+        "vercel": "^33.0.0"
+    }
+}

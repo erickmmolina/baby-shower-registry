@@ -1,0 +1,39 @@
+🎁 URLS IMPORTANTES - BABY SHOWER REGISTRY
+==========================================
+
+📱 PARA LOS INVITADOS:
+   http://localhost:3000
+   (Esta es la página principal donde seleccionan regalos)
+
+👨‍💼 PANEL DE ADMINISTRACIÓN:
+   http://localhost:3000/admin.html
+   (Aquí puedes ver quién eligió cada regalo y liberar regalos)
+
+🔧 API REST:
+   http://localhost:3000/api/gifts
+   (Endpoint para obtener todos los regalos en formato JSON)
+
+==========================================
+
+📋 PRÓXIMOS PASOS:
+
+1. El servidor ya está corriendo ✅
+2. Abre http://localhost:3000 en tu navegador
+3. Comparte el link con tus invitados
+4. Usa http://localhost:3000/admin.html para administrar
+
+==========================================
+
+💡 TIPS:
+
+- Para compartir en red local: usa tu IP local
+  Ejemplo: http://192.168.1.XXX:3000
+
+- Los datos se guardan en: gifts.json
+
+- Para detener el servidor: Ctrl+C en la terminal
+
+- Para ver quién eligió qué: abre gifts.json o usa admin.html
+
+==========================================
+

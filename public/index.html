@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍼 Lista de Regalos - Baby Shower</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <h1 class="title">🍼 Lista de Regalos - Baby Shower</h1>
+            <p class="subtitle">Selecciona un regalo y completa tus datos para reservarlo</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Filtros -->
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">
+                Todos los regalos
+            </button>
+            <button class="filter-btn" data-filter="available">
+                Disponibles
+            </button>
+            <button class="filter-btn" data-filter="claimed">
+                Ya elegidos
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Cargando regalos...</p>
+        </div>
+
+        <!-- Grid de regalos -->
+        <div id="giftsGrid" class="gifts-grid"></div>
+
+        <!-- Mensaje cuando no hay regalos -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <p>No hay regalos en esta categoría</p>
+        </div>
+    </main>
+
+    <!-- Modal para seleccionar regalo -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+
+            <div id="modalBody">
+                <h2 id="modalTitle"></h2>
+                <p class="modal-description">Completa tus datos para reservar este regalo</p>
+
+                <form id="claimForm" class="claim-form">
+                    <input type="hidden" id="giftId" />
+
+                    <div class="form-group">
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="apellido">Apellido *</label>
+                        <input type="text" id="apellido" name="apellido" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono">Teléfono (opcional)</label>
+                        <input type="tel" id="telefono" name="telefono">
+                    </div>
+
+                    <div id="modalLinks" class="modal-links"></div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Reservar Regalo
+                        </button>
+                    </div>
+                </form>
+
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <div class="success-icon">✓</div>
+                    <h3>¡Regalo Reservado!</h3>
+                    <p>Gracias por tu selección. El regalo ha sido reservado exitosamente.</p>
+                    <button class="btn btn-primary" onclick="closeModal()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
