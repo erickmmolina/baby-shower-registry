@@ -3,6 +3,11 @@ import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import Redis from 'ioredis';
+
+// Cargar variables de entorno
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,24 +22,49 @@ app.use(express.static('public'));
 
 const GIFTS_FILE = path.join(__dirname, 'gifts.json');
 
+// Configurar Redis si está disponible
+let redis = null;
+const USE_REDIS = !!process.env.REDIS_URL;
+
+if (USE_REDIS) {
+    redis = new Redis(process.env.REDIS_URL, {
+        maxRetriesPerRequest: 3,
+        enableReadyCheck: false,
+        lazyConnect: true
+    });
+    console.log('🔴 Usando Redis (Vercel KV) para almacenamiento');
+} else {
+    console.log('📁 Usando archivo local (gifts.json) para almacenamiento');
+}
+
 // Función para leer los regalos
-function readGifts() {
+async function readGifts() {
     try {
-        const data = fs.readFileSync(GIFTS_FILE, 'utf8');
-        return JSON.parse(data);
+        if (USE_REDIS && redis) {
+            const giftsStr = await redis.get('gifts');
+            return giftsStr ? JSON.parse(giftsStr) : [];
+        } else {
+            const data = fs.readFileSync(GIFTS_FILE, 'utf8');
+            return JSON.parse(data);
+        }
     } catch (error) {
-        console.error('Error leyendo gifts.json:', error);
+        console.error('Error leyendo regalos:', error);
         return [];
     }
 }
 
 // Función para guardar los regalos
-function saveGifts(gifts) {
+async function saveGifts(gifts) {
     try {
-        fs.writeFileSync(GIFTS_FILE, JSON.stringify(gifts, null, 2), 'utf8');
-        return true;
+        if (USE_REDIS && redis) {
+            await redis.set('gifts', JSON.stringify(gifts));
+            return true;
+        } else {
+            fs.writeFileSync(GIFTS_FILE, JSON.stringify(gifts, null, 2), 'utf8');
+            return true;
+        }
     } catch (error) {
-        console.error('Error guardando gifts.json:', error);
+        console.error('Error guardando regalos:', error);
         return false;
     }
 }
@@ -42,14 +72,14 @@ function saveGifts(gifts) {
 // Endpoints API
 
 // GET - Obtener todos los regalos
-app.get('/api/gifts', (req, res) => {
-    const gifts = readGifts();
+app.get('/api/gifts', async (req, res) => {
+    const gifts = await readGifts();
     res.json(gifts);
 });
 
 // GET - Obtener un regalo específico
-app.get('/api/gifts/:id', (req, res) => {
-    const gifts = readGifts();
+app.get('/api/gifts/:id', async (req, res) => {
+    const gifts = await readGifts();
     const gift = gifts.find(g => g.id === parseInt(req.params.id));
 
     if (!gift) {
@@ -60,7 +90,7 @@ app.get('/api/gifts/:id', (req, res) => {
 });
 
 // POST - Reclamar un regalo
-app.post('/api/gifts/:id/claim', (req, res) => {
+app.post('/api/gifts/:id/claim', async (req, res) => {
     const { nombre, apellido, email, telefono } = req.body;
 
     // Validar datos
@@ -70,7 +100,7 @@ app.post('/api/gifts/:id/claim', (req, res) => {
         });
     }
 
-    const gifts = readGifts();
+    const gifts = await readGifts();
     const giftIndex = gifts.findIndex(g => g.id === parseInt(req.params.id));
 
     if (giftIndex === -1) {
@@ -100,7 +130,7 @@ app.post('/api/gifts/:id/claim', (req, res) => {
     };
 
     // Guardar cambios
-    if (saveGifts(gifts)) {
+    if (await saveGifts(gifts)) {
         res.json({
             success: true,
             message: '¡Gracias! El regalo ha sido reservado exitosamente',
@@ -114,8 +144,8 @@ app.post('/api/gifts/:id/claim', (req, res) => {
 });
 
 // POST - Liberar un regalo (para administración)
-app.post('/api/gifts/:id/release', (req, res) => {
-    const gifts = readGifts();
+app.post('/api/gifts/:id/release', async (req, res) => {
+    const gifts = await readGifts();
     const giftIndex = gifts.findIndex(g => g.id === parseInt(req.params.id));
 
     if (giftIndex === -1) {
@@ -129,7 +159,7 @@ app.post('/api/gifts/:id/release', (req, res) => {
         claimedBy: null
     };
 
-    if (saveGifts(gifts)) {
+    if (await saveGifts(gifts)) {
         res.json({
             success: true,
             message: 'Regalo liberado exitosamente',
@@ -143,7 +173,7 @@ app.post('/api/gifts/:id/release', (req, res) => {
 });
 
 // POST - Actualizar imágenes de un regalo
-app.post('/api/update-images', (req, res) => {
+app.post('/api/update-images', async (req, res) => {
     const { giftId, images } = req.body;
 
     if (giftId === undefined || giftId === null) {
@@ -154,7 +184,7 @@ app.post('/api/update-images', (req, res) => {
         return res.status(400).json({ error: 'Las imágenes deben ser un array.' });
     }
 
-    const gifts = readGifts();
+    const gifts = await readGifts();
     const giftIndex = gifts.findIndex(g => g.id === giftId);
 
     if (giftIndex === -1) {
@@ -164,7 +194,7 @@ app.post('/api/update-images', (req, res) => {
     // Actualizar las imágenes del regalo
     gifts[giftIndex].images = images;
 
-    if (saveGifts(gifts)) {
+    if (await saveGifts(gifts)) {
         res.json({
             success: true,
             message: 'Imágenes actualizadas exitosamente.',
