@@ -23,7 +23,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: #f8f9fa;
+    background: #ffffff;
     color: var(--text-dark);
     line-height: 1.6;
     min-height: 100vh;
@@ -33,14 +33,16 @@ body {
 .hero {
     position: relative;
     background: linear-gradient(180deg, #fffefb 0%, #abcff4 100%);
-    min-height: 80vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    padding: 2rem 1rem;
+    padding: 4rem 2rem 2rem;
+    padding-bottom: 200px;
+    overflow: visible;
 }
 
+/* Decoraciones del hero */
 .hero-decorations {
     position: absolute;
     top: 0;
@@ -50,104 +52,192 @@ body {
     pointer-events: none;
 }
 
-/* Animación de estrellas */
+.hero-decorations-back {
+    z-index: 1;
+}
+
+.hero-decorations-front {
+    z-index: 100;
+}
+
+/* Estrellas con animación twinkle - en zona azul */
 .stars {
     position: absolute;
-    width: 120px;
+    width: 400px;
     height: auto;
-    opacity: 0.8;
+    opacity: 0.9;
     animation: twinkle 3s ease-in-out infinite;
 }
 
 .stars-1 {
-    top: 10%;
-    left: 5%;
+    bottom: 25%;
+    left: 10%;
     animation-delay: 0s;
+    transform: rotate(15deg);
 }
 
 .stars-2 {
-    top: 15%;
+    bottom: 35%;
     right: 8%;
-    animation-delay: 1.5s;
     width: 80px;
+    animation-delay: 1.5s;
+    transform: rotate(-20deg);
+}
+
+.stars-3 {
+    bottom: 15%;
+    left: 25%;
+    width: 70px;
+    animation-delay: 0.7s;
+    transform: rotate(45deg);
+}
+
+.stars-4 {
+    bottom: 40%;
+    right: 20%;
+    width: 90px;
+    animation-delay: 2.2s;
+    transform: rotate(-35deg);
 }
 
 @keyframes twinkle {
-    0%, 100% {
-        opacity: 0.3;
-        transform: scale(1);
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1) rotate(var(--rotation, 0deg));
     }
+
     50% {
-        opacity: 0.8;
-        transform: scale(1.1);
+        opacity: 1;
+        transform: scale(1.2) rotate(calc(var(--rotation, 0deg) + 10deg));
     }
 }
 
-/* Animación de nubes flotantes */
+/* Nubes flotantes con movimiento */
 .cloud {
     position: absolute;
-    width: 150px;
     height: auto;
-    opacity: 0.7;
+    opacity: 0.75;
 }
 
+/* Nubes de fondo (detrás del contenido) */
 .cloud-1 {
-    top: 20%;
-    left: -10%;
-    animation: floatCloud 25s linear infinite;
+    top: 15%;
+    left: -5%;
+    width: 200px;
+    animation: floatCloudRight 35s linear infinite;
 }
 
 .cloud-2 {
     top: 60%;
-    right: -15%;
+    right: -10%;
+    width: 220px;
+    animation: floatCloudLeft 40s linear infinite;
+}
+
+.cloud-5 {
+    bottom: 25%;
+    left: 15%;
     width: 180px;
-    animation: floatCloud 30s linear infinite reverse;
-    animation-delay: -10s;
+    opacity: 0.6;
+    animation: floatUpDown 8s ease-in-out infinite;
+    animation-delay: -2s;
 }
 
+.cloud-6 {
+    top: 35%;
+    right: 5%;
+    width: 160px;
+    opacity: 0.5;
+    animation: floatUpDown 10s ease-in-out infinite;
+    animation-delay: -5s;
+}
+
+/* Nubes de frente (delante del oso) */
 .cloud-3 {
-    top: 40%;
-    left: 50%;
-    width: 120px;
-    animation: floatCloudAlt 20s ease-in-out infinite;
+    bottom: 15%;
+    left: 20%;
+    width: 350px;
+    opacity: 0.9;
+    animation: floatUpDown 6s ease-in-out infinite;
 }
 
-@keyframes floatCloud {
+.cloud-4 {
+    top: 20%;
+    right: 15%;
+    width: 240px;
+    opacity: 0.85;
+    animation: floatUpDown 7s ease-in-out infinite;
+    animation-delay: -3s;
+}
+
+@keyframes floatCloudRight {
     0% {
         transform: translateX(0);
     }
+
     100% {
-        transform: translateX(calc(100vw + 200px));
+        transform: translateX(calc(100vw + 150px));
     }
 }
 
-@keyframes floatCloudAlt {
-    0%, 100% {
-        transform: translate(-50%, 0);
+@keyframes floatCloudLeft {
+    0% {
+        transform: translateX(0);
     }
+
+    100% {
+        transform: translateX(calc(-100vw - 200px));
+    }
+}
+
+@keyframes floatUpDown {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
     50% {
-        transform: translate(-50%, -30px);
+        transform: translateY(-25px);
     }
 }
 
-/* Estrella hero con pulse */
+/* Estrellas hero con pulse */
 .star-hero {
     position: absolute;
-    top: 25%;
-    right: 15%;
-    width: 80px;
     height: auto;
-    animation: pulse 2s ease-in-out infinite;
+    animation: pulse 2.5s ease-in-out infinite;
+}
+
+.star-hero-1 {
+    bottom: 30%;
+    right: 18%;
+    width: 90px;
+    animation-delay: 0s;
+    transform: rotate(20deg);
+}
+
+.star-hero-2 {
+    top: 15%;
+    left: 12%;
+    width: 70px;
+    animation-delay: 1.2s;
+    transform: rotate(-30deg);
 }
 
 @keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 1;
+
+    0%,
+    100% {
+        opacity: 0.7;
+        transform: scale(1) rotate(var(--star-rotation, 0deg));
     }
+
     50% {
-        transform: scale(1.2);
-        opacity: 0.8;
+        opacity: 1;
+        transform: scale(1.3) rotate(calc(var(--star-rotation, 0deg) + 15deg));
     }
 }
 
@@ -161,55 +251,62 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: center;
+}
+
+/* Contenido del hero con animación de entrada */
+.hero-content {
     padding: 2rem;
-}
-
-/* Imagen del oso */
-.hero-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: fadeInLeft 1s ease-out;
-}
-
-.bear-main {
-    max-width: 100%;
-    height: auto;
-    max-height: 500px;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
-    animation: floatBear 4s ease-in-out infinite;
-}
-
-@keyframes floatBear {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
+    order: 1;
+    animation: fadeInLeft 1.2s ease-out;
 }
 
 @keyframes fadeInLeft {
     from {
         opacity: 0;
-        transform: translateX(-50px);
+        transform: translateX(-60px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
     }
 }
 
-/* Contenido del hero */
-.hero-content {
-    animation: fadeInRight 1s ease-out;
+/* Imagen del oso con animación de entrada y flotación */
+.hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: 2;
+    animation: fadeInRight 1.2s ease-out;
+}
+
+.bear-main {
+    width: 100%;
+    max-width: 450px;
+    height: auto;
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.15));
+    animation: floatBear 4s ease-in-out infinite;
+}
+
+@keyframes floatBear {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 @keyframes fadeInRight {
     from {
         opacity: 0;
-        transform: translateX(50px);
+        transform: translateX(60px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -218,34 +315,57 @@ body {
 
 .hero-title {
     font-size: 3rem;
-    font-weight: 700;
+    font-weight: 800;
     color: #2d3436;
     margin-bottom: 1.5rem;
-    line-height: 1.2;
+    line-height: 1.3;
+    text-align: left;
 }
 
-.heart-icon {
+.hand-icon {
     display: inline-block;
-    animation: heartBeat 1.5s ease-in-out infinite;
+    transform-origin: 70% 70%;
+    animation: wave 1.5s ease-in-out infinite;
 }
 
-@keyframes heartBeat {
-    0%, 100% {
-        transform: scale(1);
+@keyframes wave {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
     }
+
     25% {
-        transform: scale(1.2);
+        transform: rotate(15deg);
     }
-    50% {
+
+    75% {
+        transform: rotate(-15deg);
+    }
+}
+
+.baby-icon {
+    display: inline-block;
+    animation: babyPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes babyPulse {
+
+    0%,
+    100% {
         transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
     }
 }
 
 .hero-text {
-    font-size: 1.3rem;
-    color: #636e72;
-    margin-bottom: 2rem;
-    line-height: 1.6;
+    font-size: 1.35rem;
+    color: #555;
+    line-height: 1.8;
+    text-align: left;
 }
 
 .gift-icon {
@@ -254,45 +374,90 @@ body {
 }
 
 @keyframes rotate {
-    0% {
-        transform: rotate(0deg);
-    }
-    25% {
-        transform: rotate(10deg);
-    }
-    50% {
-        transform: rotate(0deg);
-    }
-    75% {
-        transform: rotate(-10deg);
-    }
+
+    0%,
     100% {
         transform: rotate(0deg);
     }
-}
 
-/* Flecha hacia abajo */
-.hero-arrow {
-    text-align: center;
-    margin-top: 2rem;
-}
-
-.arrow-down {
-    display: inline-block;
-    font-size: 2rem;
-    color: #6FB1E8;
-    animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
+    25% {
+        transform: rotate(10deg);
     }
-    40% {
-        transform: translateY(-15px);
+
+    75% {
+        transform: rotate(-10deg);
     }
-    60% {
-        transform: translateY(-7px);
+}
+
+/* Nubes divisoras en el bottom del hero */
+.hero-clouds {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 250px;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.hero-clouds img {
+    position: absolute;
+    bottom: 0;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Nubes fijas en los bordes */
+.hero-clouds .cloud-fixed {
+    animation: none;
+    z-index: 5;
+}
+
+.hero-clouds .cloud-fixed-left {
+    left: -50px;
+}
+
+.hero-clouds .cloud-fixed-right {
+    right: -50px;
+}
+
+/* Nubes por detrás del oso */
+.hero-clouds .cloud-back {
+    z-index: 5;
+}
+
+/* Nubes por delante del oso */
+.hero-clouds .cloud-front {
+    z-index: 15;
+}
+
+/* Nubes de izquierda a derecha */
+.hero-clouds .cloud-left {
+    animation: cloudMoveLeft calc(8s * var(--i)) linear infinite;
+}
+
+/* Nubes de derecha a izquierda */
+.hero-clouds .cloud-right {
+    animation: cloudMoveRight calc(8s * var(--i)) linear infinite;
+}
+
+@keyframes cloudMoveLeft {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes cloudMoveRight {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(-100%);
     }
 }
 
@@ -708,13 +873,13 @@ body {
 @media (max-width: 768px) {
     .hero {
         min-height: auto;
-        padding: 3rem 1rem;
+        padding: 3rem 1rem 8rem;
     }
 
     .hero-container {
         grid-template-columns: 1fr;
         gap: 2rem;
-        text-align: center;
+        padding: 1rem;
     }
 
     .hero-image {
@@ -723,6 +888,105 @@ body {
 
     .hero-content {
         order: 2;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        text-align: center;
+    }
+
+    .hero-text {
+        font-size: 1.2rem;
+        text-align: center;
+    }
+
+    .bear-main {
+        max-width: 300px;
+    }
+
+    .stars {
+        width: 60px;
+    }
+
+    .stars-2 {
+        width: 50px;
+    }
+
+    .stars-3 {
+        width: 45px;
+    }
+
+    .stars-4 {
+        width: 55px;
+    }
+
+    .cloud-1 {
+        width: 120px;
+    }
+
+    .cloud-2 {
+        width: 150px;
+    }
+
+    .cloud-3 {
+        width: 200px;
+    }
+
+    .cloud-4 {
+        width: 140px;
+    }
+
+    .cloud-5 {
+        width: 110px;
+    }
+
+    .cloud-6 {
+        width: 100px;
+    }
+
+    .star-hero-1 {
+        width: 60px;
+    }
+
+    .star-hero-2 {
+        width: 50px;
+    }
+
+    .hero-clouds {
+        height: 120px;
+    }
+
+    .hero-clouds .cloud-fixed-left {
+        left: -30px;
+    }
+
+    .hero-clouds .cloud-fixed-right {
+        right: -30px;
+    }
+
+    .gifts-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .filters {
+        flex-direction: column;
+    }
+
+    .filter-btn {
+        width: 100%;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 2rem 1rem 6rem;
     }
 
     .hero-title {
@@ -734,40 +998,67 @@ body {
     }
 
     .bear-main {
-        max-height: 300px;
+        max-width: 250px;
     }
 
     .stars {
-        width: 60px;
+        width: 45px;
     }
 
-    .cloud {
-        width: 100px;
+    .stars-2 {
+        width: 35px;
+    }
+
+    .stars-3 {
+        width: 30px;
+    }
+
+    .stars-4 {
+        width: 40px;
+    }
+
+    .cloud-1 {
+        width: 90px;
     }
 
     .cloud-2 {
-        width: 120px;
+        width: 110px;
     }
 
-    .star-hero {
-        width: 50px;
+    .cloud-3 {
+        width: 150px;
     }
-    
-    .gifts-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+
+    .cloud-4 {
+        width: 100px;
     }
-    
-    .filters {
-        flex-direction: column;
+
+    .cloud-5 {
+        width: 80px;
     }
-    
-    .filter-btn {
-        width: 100%;
+
+    .cloud-6 {
+        width: 70px;
     }
-    
-    .form-actions {
-        flex-direction: column;
+
+    .star-hero-1 {
+        width: 45px;
+    }
+
+    .star-hero-2 {
+        width: 35px;
+    }
+
+    .hero-clouds {
+        height: 100px;
+    }
+
+    .hero-clouds .cloud-fixed-left {
+        left: -20px;
+    }
+
+    .hero-clouds .cloud-fixed-right {
+        right: -20px;
     }
 }
 

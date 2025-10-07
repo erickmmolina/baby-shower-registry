@@ -4,48 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍼 Lista de Regalos - Baby Shower</title>
+    <title>Baby Shower de Nain 🍼</title>
+    <link rel="icon" type="image/png" href="images/ico.png">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <!-- Hero Section -->
     <section class="hero">
-        <!-- Elementos decorativos animados -->
-        <div class="hero-decorations">
-            <!-- Estrellas animadas -->
-            <img src="https://i.imgur.com/8LZqYxK.png" alt="Estrellas" class="stars stars-1">
-            <img src="https://i.imgur.com/8LZqYxK.png" alt="Estrellas" class="stars stars-2">
-            
-            <!-- Nubes flotantes -->
-            <img src="https://i.imgur.com/vH8TqoP.png" alt="Nube" class="cloud cloud-1">
-            <img src="https://i.imgur.com/mK9Xw9L.png" alt="Nube" class="cloud cloud-2">
-            <img src="https://i.imgur.com/vH8TqoP.png" alt="Nube" class="cloud cloud-3">
-            
-            <!-- Estrella decorativa con pulse -->
-            <img src="https://i.imgur.com/AauVJZB.png" alt="Estrella" class="star-hero">
+        <!-- Elementos decorativos animados (capa de fondo) -->
+        <div class="hero-decorations hero-decorations-back">
+            <!-- Nubes detrás del contenido -->
+            <img src="images/cloud1.png" alt="Nube" class="cloud cloud-1">
+            <img src="images/cloud2.png" alt="Nube" class="cloud cloud-2">
+            <img src="images/cloud3.png" alt="Nube" class="cloud cloud-5">
+            <img src="images/cloud1.png" alt="Nube" class="cloud cloud-6">
         </div>
-        
+
+        <!-- Elementos decorativos animados (capa de frente) -->
+        <div class="hero-decorations hero-decorations-front">
+            <!-- Estrellas animadas con twinkle en zona azul -->
+            <img src="images/stars.png" alt="Estrellas" class="stars stars-1">
+            <img src="images/stars.png" alt="Estrellas" class="stars stars-2">
+            <img src="images/stars.png" alt="Estrellas" class="stars stars-3">
+            <img src="images/stars.png" alt="Estrellas" class="stars stars-4">
+
+            <!-- Nubes flotantes delante del oso -->
+            <img src="images/cloud2.png" alt="Nube" class="cloud cloud-3">
+            <img src="images/cloud3.png" alt="Nube" class="cloud cloud-4">
+
+            <!-- Estrellas decorativas con pulse -->
+            <img src="images/star-hero.png" alt="Estrella" class="star-hero star-hero-1">
+            <img src="images/star-hero.png" alt="Estrella" class="star-hero star-hero-2">
+        </div>
+
         <div class="hero-container">
-            <!-- Oso principal con animación -->
+            <!-- Oso principal -->
             <div class="hero-image">
-                <img src="https://i.imgur.com/xZqC3yB.png" alt="Nain" class="bear-main">
+                <img src="images/bear.png" alt="Nain" class="bear-main">
             </div>
-            
+
             <!-- Contenido del hero -->
             <div class="hero-content">
                 <h1 class="hero-title">
-                    <span class="heart-icon">💙</span> ¡Hola! Soy Nain,
+                    <span class="hand-icon">👋🏻</span> ¡Hola! Soy Nain <span class="baby-icon">👶🏼</span>
                 </h1>
                 <p class="hero-text">
-                    Pronto llegaré a abrazar a todos, pero mientras tanto, 
-                    puedes ayudarme, puedes elegir uno de mis regalitos favoritos. 
+                    Pronto llegaré a abrazar a todos, pero mientras tanto,
+                    puedes ayudarme eligiendo uno de mis regalitos favoritos
                     <span class="gift-icon">🎁</span>
                 </p>
-                <div class="hero-arrow">
-                    <span class="arrow-down">↓</span>
-                </div>
             </div>
+        </div>
+
+        <!-- Nubes divisoras en el bottom del hero -->
+        <div class="hero-clouds">
+            <!-- Nubes fijas en los bordes -->
+            <img src="images/separador/scloud5.png" class="cloud-fixed cloud-fixed-left">
+            <img src="images/separador/scloud4.png" class="cloud-fixed cloud-fixed-right">
+
+            <!-- Nubes de izquierda a derecha (por detrás del oso) -->
+            <img src="images/separador/scloud1.png" style="--i:1;" class="cloud-left cloud-back">
+            <img src="images/separador/scloud2.png" style="--i:2;" class="cloud-left cloud-back">
+            <img src="images/separador/scloud3.png" style="--i:3;" class="cloud-left cloud-back">
+            <img src="images/separador/scloud4.png" style="--i:4;" class="cloud-left cloud-back">
+
+            <!-- Nubes de derecha a izquierda (por detrás del oso) -->
+            <img src="images/separador/scloud2.png" style="--i:1.5;" class="cloud-right cloud-back">
+            <img src="images/separador/scloud4.png" style="--i:2.5;" class="cloud-right cloud-back">
+            <img src="images/separador/scloud5.png" style="--i:3.5;" class="cloud-right cloud-back">
+
+            <!-- Nubes de izquierda a derecha (por delante del oso) -->
+            <img src="images/separador/scloud5.png" style="--i:5;" class="cloud-left cloud-front">
+            <img src="images/separador/scloud1.png" style="--i:6;" class="cloud-left cloud-front">
+            <img src="images/separador/scloud3.png" style="--i:7;" class="cloud-left cloud-front">
+
+            <!-- Nubes de derecha a izquierda (por delante del oso) -->
+            <img src="images/separador/scloud1.png" style="--i:4.5;" class="cloud-right cloud-front">
+            <img src="images/separador/scloud3.png" style="--i:5.5;" class="cloud-right cloud-front">
         </div>
     </section>
 
