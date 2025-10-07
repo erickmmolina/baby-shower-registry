@@ -1,0 +1,65 @@
+🚀 COMANDOS RÁPIDOS PARA GITHUB
+================================
+
+El repositorio Git ya está inicializado y tiene el primer commit.
+Solo falta crear el repositorio en GitHub y hacer push.
+
+📋 PASO 1: Crear repositorio en GitHub
+---------------------------------------
+1. Ve a: https://github.com/new
+2. Repository name: baby-shower-registry
+3. Description: Sistema de lista de regalos para baby shower
+4. Public o Private (tu elección)
+5. ❌ NO marques "Initialize with README"
+6. Click "Create repository"
+
+
+📤 PASO 2: Subir tu código
+---------------------------
+Copia y pega estos comandos en tu terminal
+(reemplaza TU_USUARIO con tu usuario de GitHub):
+
+git remote add origin https://github.com/TU_USUARIO/baby-shower-registry.git
+git branch -M main
+git push -u origin main
+
+
+🔑 Si te pide autenticación:
+-----------------------------
+Usa un Personal Access Token:
+
+1. Ve a: https://github.com/settings/tokens
+2. Generate new token (classic)
+3. Marca: repo (todos los permisos de repositorio)
+4. Genera y copia el token
+5. Úsalo como contraseña cuando Git te lo pida
+
+
+✅ VERIFICAR que funcionó:
+--------------------------
+Refresca la página de tu repositorio en GitHub.
+Deberías ver todos tus archivos.
+
+
+🌐 PASO 3: Ir a Vercel
+-----------------------
+Una vez que tu código esté en GitHub:
+
+1. Ve a: https://vercel.com
+2. Sign up with GitHub
+3. Import repository
+4. Sigue las instrucciones en: DEPLOY_VERCEL.md
+
+
+📁 Archivos importantes:
+------------------------
+- PROXIMOS_PASOS.md  → Guía completa paso a paso
+- DEPLOY_VERCEL.md   → Guía detallada de Vercel
+- README.md          → Documentación del proyecto
+
+
+💡 TIP: Si no quieres usar comandos:
+------------------------------------
+Descarga GitHub Desktop: https://desktop.github.com/
+Es más fácil y visual.
+
