@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { giftId, name, description, link1, link2 } = req.body;
+    const { giftId, name, description, link1, price1, link2, price2 } = req.body;
 
     // Validar datos
     if (giftId === undefined || giftId === null) {
@@ -50,7 +50,9 @@ export default async function handler(req, res) {
       name: name.trim(),
       description: description ? description.trim() : '',
       link1: link1 ? link1.trim() : '',
-      link2: link2 ? link2.trim() : ''
+      price1: price1 ? parseInt(price1) : null,
+      link2: link2 ? link2.trim() : '',
+      price2: price2 ? parseInt(price2) : null
     };
 
     // Guardar en Redis

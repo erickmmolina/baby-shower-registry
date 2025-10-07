@@ -209,7 +209,7 @@ app.post('/api/update-images', async (req, res) => {
 
 // POST - Actualizar datos de un regalo
 app.post('/api/update-gift', async (req, res) => {
-    const { giftId, name, description, link1, link2 } = req.body;
+    const { giftId, name, description, link1, price1, link2, price2 } = req.body;
 
     if (giftId === undefined || giftId === null) {
         return res.status(400).json({ error: 'ID de regalo requerido.' });
@@ -232,7 +232,9 @@ app.post('/api/update-gift', async (req, res) => {
         name: name.trim(),
         description: description ? description.trim() : '',
         link1: link1 ? link1.trim() : '',
-        link2: link2 ? link2.trim() : ''
+        price1: price1 ? parseInt(price1) : null,
+        link2: link2 ? link2.trim() : '',
+        price2: price2 ? parseInt(price2) : null
     };
 
     if (await saveGifts(gifts)) {

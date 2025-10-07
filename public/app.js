@@ -131,8 +131,24 @@ function createGiftCard(gift) {
             <div class="gift-content">
                 <h3 class="gift-name">${gift.name}</h3>
                 <div class="gift-links">
-                    ${gift.link1 ? `<a href="${gift.link1}" target="_blank" class="gift-link">Ver opción 1</a>` : ''}
-                    ${gift.link2 ? `<a href="${gift.link2}" target="_blank" class="gift-link">Ver opción 2</a>` : ''}
+                    ${gift.link1 ? `
+                        <div class="gift-link-with-price">
+                            <a href="${gift.link1}" target="_blank" class="gift-link">🔗 Ver opción 1</a>
+                            ${gift.price1 ? `
+                                <span class="price-divider"></span>
+                                <span class="gift-price">$${formatPrice(gift.price1)}</span>
+                            ` : ''}
+                        </div>
+                    ` : ''}
+                    ${gift.link2 ? `
+                        <div class="gift-link-with-price">
+                            <a href="${gift.link2}" target="_blank" class="gift-link">🔗 Ver opción 2</a>
+                            ${gift.price2 ? `
+                                <span class="price-divider"></span>
+                                <span class="gift-price">$${formatPrice(gift.price2)}</span>
+                            ` : ''}
+                        </div>
+                    ` : ''}
                 </div>
                 <div class="gift-actions">
                     <button 
@@ -159,6 +175,12 @@ function getGiftEmoji(name) {
     }
 
     return '🎁'; // Emoji por defecto
+}
+
+// Formatear precio con separador de miles
+function formatPrice(price) {
+    if (!price) return '';
+    return new Intl.NumberFormat('es-CL').format(price);
 }
 
 // Configurar filtros

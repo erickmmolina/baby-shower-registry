@@ -712,8 +712,15 @@ body {
 .gift-links {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.75rem;
     margin-bottom: 1rem;
+}
+
+.gift-link-with-price {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
 }
 
 .gift-link {
@@ -723,6 +730,7 @@ body {
     text-decoration: none;
     font-size: 0.9rem;
     transition: color 0.3s ease;
+    white-space: nowrap;
 }
 
 .gift-link:hover {
@@ -730,9 +738,23 @@ body {
     text-decoration: underline;
 }
 
-.gift-link::before {
-    content: '🔗';
-    margin-right: 0.5rem;
+.price-divider {
+    flex: 1;
+    height: 1px;
+    border-bottom: 2px dotted #ddd;
+    margin: 0 0.75rem;
+    min-width: 20px;
+}
+
+.gift-price {
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    border: 1px solid #a5d6a7;
 }
 
 .gift-actions {

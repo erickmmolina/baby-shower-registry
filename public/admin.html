@@ -687,7 +687,9 @@
             document.getElementById('editGiftName').value = currentGiftForEdit.name || '';
             document.getElementById('editGiftDescription').value = currentGiftForEdit.description || '';
             document.getElementById('editGiftLink1').value = currentGiftForEdit.link1 || '';
+            document.getElementById('editGiftPrice1').value = currentGiftForEdit.price1 || '';
             document.getElementById('editGiftLink2').value = currentGiftForEdit.link2 || '';
+            document.getElementById('editGiftPrice2').value = currentGiftForEdit.price2 || '';
             
             document.getElementById('editModal').classList.add('active');
         }
@@ -703,7 +705,9 @@
             const name = document.getElementById('editGiftName').value.trim();
             const description = document.getElementById('editGiftDescription').value.trim();
             const link1 = document.getElementById('editGiftLink1').value.trim();
+            const price1 = document.getElementById('editGiftPrice1').value.trim();
             const link2 = document.getElementById('editGiftLink2').value.trim();
+            const price2 = document.getElementById('editGiftPrice2').value.trim();
 
             if (!name) {
                 alert('El nombre del regalo es obligatorio');
@@ -721,7 +725,9 @@
                         name,
                         description,
                         link1: link1 || '',
-                        link2: link2 || ''
+                        price1: price1 ? parseInt(price1) : null,
+                        link2: link2 || '',
+                        price2: price2 ? parseInt(price2) : null
                     })
                 });
 
@@ -808,8 +814,20 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="editGiftPrice1">Precio Referencia Link 1 (CLP)</label>
+                    <input type="number" id="editGiftPrice1" placeholder="Ej: 25990" min="0">
+                    <small style="color: #999;">Dejar vacío si no tiene precio</small>
+                </div>
+
+                <div class="form-group">
                     <label for="editGiftLink2">Link de Compra 2</label>
                     <input type="url" id="editGiftLink2" placeholder="https://...">
+                </div>
+
+                <div class="form-group">
+                    <label for="editGiftPrice2">Precio Referencia Link 2 (CLP)</label>
+                    <input type="number" id="editGiftPrice2" placeholder="Ej: 25990" min="0">
+                    <small style="color: #999;">Dejar vacío si no tiene precio</small>
                 </div>
 
                 <div class="form-actions">
