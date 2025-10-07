@@ -1,10 +1,7 @@
-import { createClient } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 
-// Crear cliente KV con las variables de entorno
-const kv = createClient({
-  url: process.env.KV_REST_API_URL || process.env.STORAGE_URL || process.env.REDIS_URL,
-  token: process.env.KV_REST_API_TOKEN || process.env.STORAGE_REST_API_TOKEN || process.env.REDIS_REST_API_TOKEN
-});
+// Crear cliente Redis usando REDIS_URL de Vercel
+const redis = Redis.fromEnv();
 
 export default async function handler(req, res) {
   // Habilitar CORS
@@ -28,7 +25,7 @@ export default async function handler(req, res) {
     }
 
     // Obtener todos los regalos
-    let gifts = await kv.get('gifts');
+    let gifts = await redis.get('gifts');
     
     if (!gifts || !Array.isArray(gifts)) {
       return res.status(500).json({ error: 'Error al obtener los regalos' });
@@ -48,8 +45,8 @@ export default async function handler(req, res) {
       claimedBy: null
     };
 
-    // Guardar en Vercel KV
-    await kv.set('gifts', gifts);
+    // Guardar en Redis
+    await redis.set('gifts', gifts);
 
     return res.status(200).json({ 
       success: true, 

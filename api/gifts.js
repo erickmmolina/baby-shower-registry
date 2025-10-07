@@ -1,10 +1,7 @@
-import { createClient } from '@vercel/kv';
+import { Redis } from '@upstash/redis';
 
-// Crear cliente KV con las variables de entorno
-const kv = createClient({
-  url: process.env.KV_REST_API_URL || process.env.STORAGE_URL || process.env.REDIS_URL,
-  token: process.env.KV_REST_API_TOKEN || process.env.STORAGE_REST_API_TOKEN || process.env.REDIS_REST_API_TOKEN
-});
+// Crear cliente Redis usando REDIS_URL de Vercel
+const redis = Redis.fromEnv();
 
 // Función para obtener todos los regalos
 export default async function handler(req, res) {
@@ -19,8 +16,8 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
-      // Obtener todos los regalos de Vercel KV
-      let gifts = await kv.get('gifts');
+      // Obtener todos los regalos de Redis
+      let gifts = await redis.get('gifts');
       
       // Si no hay datos, inicializar con los datos por defecto
       if (!gifts) {
@@ -276,7 +273,7 @@ async function initializeGifts() {
     }
   ];
 
-  await kv.set('gifts', defaultGifts);
+  await redis.set('gifts', defaultGifts);
   return defaultGifts;
 }
 
