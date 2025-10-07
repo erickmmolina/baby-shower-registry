@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,7 +137,8 @@
             margin-top: 2rem;
         }
 
-        th, td {
+        th,
+        td {
             padding: 1rem;
             text-align: left;
             border-bottom: 1px solid #dfe6e9;
@@ -279,12 +281,14 @@
                 font-size: 0.9rem;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 0.5rem;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header-actions">
@@ -341,28 +345,28 @@
         <div class="modal-content">
             <button class="modal-close" onclick="closeAddGiftModal()">&times;</button>
             <h2 style="color: #6FB1E8; margin-bottom: 1.5rem;">Agregar Nuevo Regalo</h2>
-            
+
             <form id="addGiftForm" onsubmit="addGift(event)">
                 <div class="form-group">
                     <label for="giftName">Nombre del Regalo *</label>
                     <input type="text" id="giftName" required>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="giftDescription">Descripción (opcional)</label>
                     <textarea id="giftDescription" rows="3"></textarea>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="giftLink1">Link de Compra 1 (opcional)</label>
                     <input type="url" id="giftLink1" placeholder="https://...">
                 </div>
-                
+
                 <div class="form-group">
                     <label for="giftLink2">Link de Compra 2 (opcional)</label>
                     <input type="url" id="giftLink2" placeholder="https://...">
                 </div>
-                
+
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeAddGiftModal()">
                         Cancelar
@@ -437,6 +441,13 @@
                         <td>${claimedInfo}</td>
                         <td>
                             <div class="action-buttons">
+                                <button 
+                                    class="btn btn-primary" 
+                                    onclick="openImagesModal(${gift.id})"
+                                    style="background: #89CFF0; padding: 0.5rem 1rem; font-size: 0.9rem;"
+                                >
+                                    🖼️ Imágenes
+                                </button>
                                 <button 
                                     class="btn btn-release" 
                                     onclick="releaseGift(${gift.id})"
@@ -571,8 +582,131 @@
             }
         });
 
+        // Gestionar imágenes
+        let currentGiftForImages = null;
+
+        function openImagesModal(giftId) {
+            currentGiftForImages = allGifts.find(g => g.id === giftId);
+            if (!currentGiftForImages) return;
+
+            document.getElementById('imagesGiftName').textContent = currentGiftForImages.name;
+            document.getElementById('imagesModal').style.display = 'flex';
+            displayCurrentImages();
+        }
+
+        function closeImagesModal() {
+            document.getElementById('imagesModal').style.display = 'none';
+            currentGiftForImages = null;
+        }
+
+        function displayCurrentImages() {
+            const container = document.getElementById('currentImagesList');
+            const images = currentGiftForImages.images || [];
+
+            if (images.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center; padding: 2rem;">No hay imágenes agregadas</p>';
+                return;
+            }
+
+            container.innerHTML = images.map((url, index) => `
+                <div style="position: relative; display: inline-block; margin: 0.5rem;">
+                    <img src="${url}" alt="Imagen ${index + 1}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">
+                    <button onclick="removeImage(${index})" 
+                            style="position: absolute; top: 5px; right: 5px; background: #ff6b6b; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-weight: bold;">×</button>
+                </div>
+            `).join('');
+        }
+
+        function addImageUrl() {
+            const input = document.getElementById('newImageUrl');
+            const url = input.value.trim();
+
+            if (!url) {
+                alert('Por favor ingresa una URL válida');
+                return;
+            }
+
+            if (!currentGiftForImages.images) {
+                currentGiftForImages.images = [];
+            }
+
+            currentGiftForImages.images.push(url);
+            input.value = '';
+            displayCurrentImages();
+        }
+
+        function removeImage(index) {
+            if (!confirm('¿Eliminar esta imagen?')) return;
+
+            currentGiftForImages.images.splice(index, 1);
+            displayCurrentImages();
+        }
+
+        async function saveImages() {
+            try {
+                const response = await fetch(`${API_URL}/update-images`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        giftId: currentGiftForImages.id,
+                        images: currentGiftForImages.images || []
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Imágenes guardadas exitosamente');
+                    closeImagesModal();
+                    loadGifts();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar las imágenes');
+            }
+        }
+
         // Cargar datos al iniciar
         document.addEventListener('DOMContentLoaded', loadGifts);
     </script>
+
+    <!-- Modal para gestionar imágenes -->
+    <div id="imagesModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <button class="modal-close" onclick="closeImagesModal()">&times;</button>
+            <h2 style="color: #6FB1E8; margin-bottom: 1rem;">🖼️ Gestionar Imágenes</h2>
+            <h3 id="imagesGiftName" style="color: #636e72; font-weight: normal; margin-bottom: 1.5rem;"></h3>
+
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Agregar nueva imagen
+                    (URL)</label>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="url" id="newImageUrl" placeholder="https://ejemplo.com/imagen.jpg"
+                        style="flex: 1; padding: 0.75rem; border: 2px solid #dfe6e9; border-radius: 8px; font-size: 1rem;">
+                    <button onclick="addImageUrl()" class="btn btn-primary">➕ Agregar</button>
+                </div>
+                <small style="color: #999; display: block; margin-top: 0.5rem;">
+                    Puedes usar URLs de imágenes de Imgur, Google Drive, Dropbox, etc.
+                </small>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 1rem; font-weight: 600;">Imágenes actuales:</label>
+                <div id="currentImagesList"
+                    style="min-height: 100px; max-height: 400px; overflow-y: auto; border: 2px dashed #dfe6e9; border-radius: 8px; padding: 1rem;">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="closeImagesModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveImages()">💾 Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

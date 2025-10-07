@@ -142,9 +142,49 @@ app.post('/api/gifts/:id/release', (req, res) => {
     }
 });
 
+// POST - Actualizar imágenes de un regalo
+app.post('/api/update-images', (req, res) => {
+    const { giftId, images } = req.body;
+
+    if (giftId === undefined || giftId === null) {
+        return res.status(400).json({ error: 'ID de regalo requerido.' });
+    }
+
+    if (!Array.isArray(images)) {
+        return res.status(400).json({ error: 'Las imágenes deben ser un array.' });
+    }
+
+    const gifts = readGifts();
+    const giftIndex = gifts.findIndex(g => g.id === giftId);
+
+    if (giftIndex === -1) {
+        return res.status(404).json({ error: 'Regalo no encontrado.' });
+    }
+
+    // Actualizar las imágenes del regalo
+    gifts[giftIndex].images = images;
+
+    if (saveGifts(gifts)) {
+        res.json({
+            success: true,
+            message: 'Imágenes actualizadas exitosamente.',
+            gift: gifts[giftIndex]
+        });
+    } else {
+        res.status(500).json({
+            error: 'Error al actualizar las imágenes.'
+        });
+    }
+});
+
 // Ruta principal - servir el HTML
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Ruta para el admin
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 // Iniciar servidor

@@ -97,11 +97,35 @@ function createGiftCard(gift) {
     const emoji = getGiftEmoji(gift.name);
     const statusClass = isAvailable ? 'disponible' : 'claimed';
     const statusText = isAvailable ? 'Disponible' : 'Ya elegido';
+    const hasImages = gift.images && gift.images.length > 0;
+
+    // Crear HTML para la imagen o slider
+    let imageHtml;
+    if (hasImages) {
+        imageHtml = `
+            <div class="gift-slider" data-gift-id="${gift.id}">
+                ${gift.images.map((img, index) => `
+                    <div class="slider-image ${index === 0 ? 'active' : ''}" style="background-image: url('${img}')"></div>
+                `).join('')}
+                ${gift.images.length > 1 ? `
+                    <button class="slider-btn slider-prev" onclick="changeSlide(${gift.id}, -1)">‹</button>
+                    <button class="slider-btn slider-next" onclick="changeSlide(${gift.id}, 1)">›</button>
+                    <div class="slider-dots">
+                        ${gift.images.map((_, index) => `
+                            <span class="slider-dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${gift.id}, ${index})"></span>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    } else {
+        imageHtml = `<div style="font-size: 4rem; z-index: 1;">${emoji}</div>`;
+    }
 
     return `
         <div class="gift-card ${isAvailable ? '' : 'claimed'}">
-            <div class="gift-image">
-                <div style="font-size: 4rem; z-index: 1;">${emoji}</div>
+            <div class="gift-image ${hasImages ? 'has-images' : ''}">
+                ${imageHtml}
                 <span class="gift-status-badge ${statusClass}">${statusText}</span>
             </div>
             <div class="gift-content">
@@ -227,21 +251,21 @@ async function claimGift() {
     const apellido = document.getElementById('apellido').value.trim();
     const email = document.getElementById('email').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
-    
+
     if (!nombre || !apellido || !email) {
         alert('Por favor completa todos los campos requeridos');
         return;
     }
-    
+
     const form = document.getElementById('claimForm');
     const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-    
+
     try {
         // Deshabilitar botón
         submitBtn.disabled = true;
         submitBtn.textContent = 'Reservando...';
-        
+
         const response = await fetch(`${API_URL}/claim`, {
             method: 'POST',
             headers: {
@@ -277,7 +301,48 @@ async function claimGift() {
     }
 }
 
+// Funciones del slider
+function changeSlide(giftId, direction) {
+    const slider = document.querySelector(`.gift-slider[data-gift-id="${giftId}"]`);
+    if (!slider) return;
+
+    const images = slider.querySelectorAll('.slider-image');
+    const dots = slider.querySelectorAll('.slider-dot');
+    let currentIndex = Array.from(images).findIndex(img => img.classList.contains('active'));
+
+    // Calcular nuevo índice
+    currentIndex += direction;
+    if (currentIndex < 0) currentIndex = images.length - 1;
+    if (currentIndex >= images.length) currentIndex = 0;
+
+    // Actualizar imágenes y dots
+    images.forEach((img, index) => {
+        img.classList.toggle('active', index === currentIndex);
+    });
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+    });
+}
+
+function goToSlide(giftId, index) {
+    const slider = document.querySelector(`.gift-slider[data-gift-id="${giftId}"]`);
+    if (!slider) return;
+
+    const images = slider.querySelectorAll('.slider-image');
+    const dots = slider.querySelectorAll('.slider-dot');
+
+    // Actualizar imágenes y dots
+    images.forEach((img, i) => {
+        img.classList.toggle('active', i === index);
+    });
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
+}
+
 // Hacer funciones globales para uso en HTML
 window.openClaimModal = openClaimModal;
 window.closeModal = closeModal;
+window.changeSlide = changeSlide;
+window.goToSlide = goToSlide;
 
