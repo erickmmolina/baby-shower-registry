@@ -413,6 +413,29 @@ function addToCalendar() {
     window.open(googleCalendarUrl, '_blank');
 }
 
+// Formulario de confirmación de asistencia
+document.getElementById('confirmationForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = {
+        nombre: e.target[0].value,
+        email: e.target[1].value,
+        asistencia: e.target[2].value
+    };
+
+    try {
+        // Aquí podrías enviar los datos a un servidor
+        console.log('Confirmación de asistencia:', formData);
+        
+        // Mostrar mensaje de éxito
+        alert('¡Gracias por confirmar tu asistencia! 💙');
+        e.target.reset();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Hubo un error al enviar la confirmación. Por favor intenta nuevamente.');
+    }
+});
+
 // Hacer funciones globales para uso en HTML
 window.openClaimModal = openClaimModal;
 window.closeModal = closeModal;

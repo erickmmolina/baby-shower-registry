@@ -120,7 +120,7 @@
         <div class="event-bg"></div>
         <div class="event-container">
             <div class="event-content">
-                <h2 class="event-title">🎉 ¡Ven a Celebrar Conmigo!</h2>
+                <h2 class="event-title">¡Ven a Celebrar conmigo! 🎉 </h2>
                 <p class="event-description">
                     Mis papás prepararon una tarde llena de amor, juegos y muchas risas.<br>
                     ¡Te espero para celebrar juntos!
@@ -155,6 +155,76 @@
                     <button class="btn btn-calendar" onclick="addToCalendar()">
                         📆 Agregar al Calendario
                     </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Mensaje de los Papás -->
+    <section class="parents-section">
+        <div class="parents-bg"></div>
+        <div class="parents-container">
+            <h2 class="parents-title">Mamá y papá dicen que soy chiquitito 🍼 </h2>
+            <p class="parents-subtitle">pero ya puedo sentir todo el amor que me rodea.</p>
+
+            <!-- Primera sección: Imagen izquierda + Texto derecha -->
+            <div class="parents-content-main">
+                <div class="parents-image-left">
+                    <img src="images/eco.png" alt="eco">
+                </div>
+                <div class="parents-text">
+                    <p class="parents-paragraph">
+                        Estoy creciendo gracias al amor de mamá y papá,<br>
+                        y muy pronto voy a poder sentir sus abrazos también.
+                    </p>
+                    <p class="parents-paragraph">
+                        Gracias por acompañarnos y ser parte de esta historia tan bonita.
+                    </p>
+                    <p class="parents-paragraph-final">
+                        ¡Nos vemos muy pronto! 💙
+                    </p>
+                </div>
+            </div>
+
+            <!-- Segunda sección: Texto izquierda + Imagen derecha -->
+            <div class="parents-confirmation">
+                <div class="confirmation-text">
+                    <p class="confirmation-paragraph">
+                        Hemos esperado este momento con mucha ilusión.
+                    </p>
+                    <p class="confirmation-paragraph">
+                        Gracias por acompañarnos y por ayudar a recibir a nuestro pequeño con tanto cariño.
+                    </p>
+                    <p class="confirmation-paragraph highlight">
+                        Para nosotros es muy importante tu presencia, por lo que puedes confirmar tu asistencia en el siguiente formulario.
+                    </p>
+                    <p class="confirmation-question">
+                        ¿Podrás venir?
+                    </p>
+
+                    <!-- Formulario de confirmación -->
+                    <form class="confirmation-form" id="confirmationForm">
+                        <div class="form-row">
+                            <input type="text" placeholder="Tu nombre completo" required>
+                        </div>
+                        <div class="form-row">
+                            <input type="email" placeholder="Tu correo electrónico" required>
+                        </div>
+                        <div class="form-row">
+                            <select required>
+                                <option value="">¿Confirmas tu asistencia?</option>
+                                <option value="si">Sí, asistiré 🎉</option>
+                                <option value="no">No podré asistir 😢</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-confirm">
+                            Confirmar Asistencia
+                        </button>
+                    </form>
+                </div>
+
+                <div class="confirmation-image">
+                    <img src="images/papas.png" alt="Los papás">
                 </div>
             </div>
         </div>

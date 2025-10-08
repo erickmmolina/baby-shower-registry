@@ -1,0 +1,6 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#fef5f0"/>
+  <text x="200" y="180" font-family="Arial, sans-serif" font-size="60" fill="#ff6b9d" text-anchor="middle">👨‍👩‍👦</text>
+  <text x="200" y="240" font-family="Arial, sans-serif" font-size="18" fill="#636e72" text-anchor="middle">Foto de los Papás</text>
+  <text x="200" y="265" font-family="Arial, sans-serif" font-size="14" fill="#b2bec3" text-anchor="middle">(Reemplazar con tu imagen)</text>
+</svg>

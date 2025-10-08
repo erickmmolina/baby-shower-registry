@@ -1226,7 +1226,7 @@ body {
     width: 100%;
     height: 100%;
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.80) 10%, rgba(255, 255, 255, 0.50) 50%, rgba(254, 249, 243, 0.10) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 100) 10%, rgba(255, 255, 255, 0.50) 50%, rgba(254, 249, 243, 0.10) 100%),
         url('images/event-bg.jpg');
     background-size: cover;
     background-position: center;
@@ -1395,6 +1395,247 @@ body {
         width: 100%;
         padding: 0.875rem 2rem;
         font-size: 1rem;
+    }
+}
+
+/* ========================================
+   SECCIÓN DE MENSAJE DE LOS PAPÁS
+======================================== */
+
+.parents-section {
+    position: relative;
+    padding: 6rem 2rem;
+    overflow: hidden;
+    background: linear-gradient(180deg, #fef9f3 0%, #ffffff 100%);
+}
+
+.parents-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/fondo.png');
+    background-size: auto;
+    background-position: top left;
+    background-repeat: repeat;
+    opacity: 1;
+    z-index: 0;
+}
+
+.parents-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.parents-title {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+}
+
+.parents-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 3rem;
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Primera sección: Imagen izquierda + Texto derecha */
+.parents-content-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 3rem;
+}
+
+.parents-image-left {
+    position: relative;
+    /*    border-radius: 20px;
+    overflow: hidden;
+    box-shadow:
+        0 10px 30px rgba(111, 177, 232, 0.2),
+        0 0 0 8px rgba(255, 255, 255, 0.9); */
+    transition: all 0.3s ease;
+}
+
+.parents-image-left:hover {
+    transform: translateY(-5px);
+    box-shadow:
+        0 15px 40px rgba(111, 177, 232, 0.25),
+        0 0 0 8px rgba(255, 255, 255, 0.95);
+}
+
+.parents-image-left img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.parents-text {
+    padding: 2rem;
+}
+
+.parents-paragraph {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.parents-paragraph-final {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 2rem;
+    text-align: left;
+}
+
+/* Segunda sección: Texto izquierda + Imagen derecha */
+.parents-confirmation {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-top: 4rem;
+}
+
+.confirmation-text {
+    padding: 2rem;
+}
+
+.confirmation-paragraph {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: var(--text-dark);
+    margin-bottom: 1.2rem;
+}
+
+.confirmation-paragraph.highlight {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.confirmation-question {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 2rem 0 1.5rem;
+}
+
+.confirmation-form {
+    margin-top: 1.5rem;
+}
+
+.form-row {
+    margin-bottom: 1rem;
+}
+
+.confirmation-form input,
+.confirmation-form select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.confirmation-form input:focus,
+.confirmation-form select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(111, 177, 232, 0.1);
+}
+
+.confirmation-form select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236FB1E8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+.btn-confirm {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn-confirm:hover {
+    background: #5a9fd4;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(111, 177, 232, 0.3);
+}
+
+.confirmation-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Responsive para móviles */
+@media (max-width: 968px) {
+    .parents-content-main {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .parents-text {
+        padding: 1rem;
+    }
+
+    .parents-paragraph {
+        font-size: 1.1rem;
+    }
+
+    .parents-paragraph-final {
+        font-size: 1.2rem;
+    }
+
+    .parents-title {
+        font-size: 1.8rem;
+    }
+
+    .parents-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .parents-confirmation {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .confirmation-text {
+        padding: 1rem;
+    }
+
+    .confirmation-paragraph {
+        font-size: 1.1rem;
+    }
+
+    .confirmation-question {
+        font-size: 1.25rem;
     }
 }
 

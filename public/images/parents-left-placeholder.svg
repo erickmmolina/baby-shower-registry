@@ -1,0 +1,6 @@
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="600" fill="#e8f4f8"/>
+  <text x="300" y="270" font-family="Arial, sans-serif" font-size="80" fill="#6FB1E8" text-anchor="middle">🖼️</text>
+  <text x="300" y="350" font-family="Arial, sans-serif" font-size="20" fill="#636e72" text-anchor="middle">Imagen Izquierda</text>
+  <text x="300" y="385" font-family="Arial, sans-serif" font-size="16" fill="#b2bec3" text-anchor="middle">(Reemplazar con tu imagen)</text>
+</svg>
