@@ -1404,7 +1404,7 @@ body {
 
 .parents-section {
     position: relative;
-    padding: 6rem 2rem;
+    padding: 6rem 2rem 4rem;
     overflow: hidden;
     background: linear-gradient(180deg, #fef9f3 0%, #ffffff 100%);
 }
@@ -1620,10 +1620,15 @@ body {
         font-size: 1.1rem;
     }
 
+    .parents-section {
+        padding: 4rem 1.5rem 2rem;
+    }
+
     .parents-confirmation {
         grid-template-columns: 1fr;
         gap: 2rem;
         margin-top: 2rem;
+        margin-bottom: 0;
     }
 
     .confirmation-text {
@@ -1697,11 +1702,16 @@ body {
 
 @media (max-width: 768px) {
     .footer {
-        padding: 1.5rem 1rem 1rem;
-        margin-top: 2rem;
+        padding: 2rem 1.5rem 2rem;
+        margin-top: 0;
+    }
+
+    .footer-divider {
+        margin-bottom: 1.2rem;
     }
 
     .footer-text {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
+        opacity: 0.85;
     }
 }
