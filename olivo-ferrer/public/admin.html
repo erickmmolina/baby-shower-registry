@@ -11,8 +11,19 @@
     body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);padding:20px;max-width:1200px;margin:0 auto}
 
     h1{font-size:1.6rem;color:var(--navy);margin-bottom:6px}
-    .subtitle{color:var(--muted);font-size:.85rem;margin-bottom:30px}
+    .subtitle{color:var(--muted);font-size:.85rem;margin-bottom:20px}
     a{color:var(--sky)}
+
+    /* Header actions */
+    .header-actions{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+    .header-left{flex:1}
+    .header-right{display:flex;gap:8px;flex-wrap:wrap}
+
+    .btn{padding:10px 20px;border-radius:10px;border:none;font-family:inherit;font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+    .btn-navy{background:var(--navy);color:var(--white)}
+    .btn-navy:hover{background:#1a2e42}
+    .btn-outline{background:var(--white);color:var(--navy);border:1px solid #d0d8e0}
+    .btn-outline:hover{border-color:var(--sky);color:var(--sky)}
 
     .tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
     .tab{padding:10px 24px;border-radius:10px;border:1px solid #d0d8e0;background:var(--white);font-family:inherit;font-size:.85rem;cursor:pointer;transition:all .2s;color:var(--muted)}
@@ -40,12 +51,15 @@
     .badge-claimed{background:rgba(76,175,133,.1);color:var(--green)}
     .badge-priority{background:rgba(201,169,110,.15);color:var(--gold)}
 
+    .action-buttons{display:flex;gap:6px;flex-wrap:wrap}
     .btn-sm{padding:6px 14px;border-radius:7px;border:1px solid #d8e2ea;background:var(--white);font-family:inherit;font-size:.75rem;cursor:pointer;transition:all .2s;color:var(--text)}
     .btn-sm:hover{border-color:var(--sky);color:var(--sky)}
     .btn-sm.danger{color:var(--red);border-color:var(--red)}
     .btn-sm.danger:hover{background:var(--red);color:var(--white)}
     .btn-sm.release{color:var(--gold);border-color:var(--gold)}
     .btn-sm.release:hover{background:var(--gold);color:var(--white)}
+    .btn-sm.edit{color:var(--navy);border-color:var(--navy)}
+    .btn-sm.edit:hover{background:var(--navy);color:var(--white)}
 
     .claimed-info{font-size:.72rem;color:var(--muted);line-height:1.5}
     .claimed-info strong{color:var(--text)}
@@ -59,6 +73,7 @@
     .rsvp-email{font-size:.78rem;color:var(--muted);margin-bottom:8px}
     .rsvp-detail{font-size:.78rem;color:var(--text);line-height:1.6}
     .rsvp-msg{font-style:italic;color:var(--muted);font-size:.78rem;margin-top:6px;padding-top:6px;border-top:1px solid #f0f2f5}
+
     /* Auth overlay */
     .auth-overlay{position:fixed;inset:0;background:var(--navy);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity .3s}
     .auth-overlay.hidden{opacity:0;pointer-events:none}
@@ -70,6 +85,32 @@
     .auth-box button{width:100%;margin-top:14px;padding:12px;border:none;border-radius:10px;background:var(--navy);color:var(--white);font-family:inherit;font-size:.88rem;font-weight:500;cursor:pointer;transition:background .2s}
     .auth-box button:hover{background:#1a2e42}
     .auth-error{color:var(--red);font-size:.78rem;margin-top:10px;min-height:1.2em}
+
+    /* Modal */
+    .modal{display:none;position:fixed;inset:0;background:rgba(15,30,46,.5);z-index:1000;align-items:center;justify-content:center;padding:1rem}
+    .modal.active{display:flex}
+    .modal-content{background:var(--white);border-radius:16px;max-width:500px;width:100%;padding:32px;position:relative;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+    .modal-content h2{font-size:1.1rem;color:var(--navy);margin-bottom:20px;font-weight:600}
+    .modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.5rem;color:var(--muted);cursor:pointer;line-height:1;padding:4px}
+    .modal-close:hover{color:var(--navy)}
+
+    .form-group{margin-bottom:14px}
+    .form-group label{display:block;margin-bottom:5px;font-weight:500;font-size:.82rem;color:var(--navy)}
+    .form-group input,.form-group textarea,.form-group select{width:100%;padding:10px 14px;border:1px solid #d0d8e0;border-radius:8px;font-family:inherit;font-size:.85rem;outline:none;transition:border-color .2s;background:var(--white);color:var(--text)}
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--sky)}
+    .form-group small{color:var(--muted);font-size:.72rem;margin-top:3px;display:block}
+
+    .form-actions{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}
+    .btn-cancel{padding:10px 20px;border-radius:10px;border:1px solid #d0d8e0;background:var(--white);font-family:inherit;font-size:.85rem;cursor:pointer;color:var(--muted);transition:all .2s}
+    .btn-cancel:hover{border-color:var(--navy);color:var(--navy)}
+    .btn-submit{padding:10px 20px;border-radius:10px;border:none;background:var(--navy);color:var(--white);font-family:inherit;font-size:.85rem;font-weight:500;cursor:pointer;transition:all .2s}
+    .btn-submit:hover{background:#1a2e42}
+
+    @media(max-width:768px){
+      .header-actions{flex-direction:column}
+      .header-right{width:100%}
+      .header-right .btn{flex:1;justify-content:center}
+    }
   </style>
 </head>
 <body>
@@ -78,17 +119,26 @@
 <div class="auth-overlay" id="authOverlay">
   <div class="auth-box">
     <h2>Acceso Admin</h2>
-    <p>Ingresa la contraseña para continuar</p>
+    <p>Ingresa la contrasena para continuar</p>
     <form id="authForm" onsubmit="return handleAuth(event)">
-      <input type="password" id="authPassword" placeholder="Contraseña" autocomplete="current-password" autofocus>
+      <input type="password" id="authPassword" placeholder="Contrasena" autocomplete="current-password" autofocus>
       <button type="submit">Ingresar</button>
       <div class="auth-error" id="authError"></div>
     </form>
   </div>
 </div>
 
-<h1>Panel de Administración</h1>
-<p class="subtitle">Baby Shower Olivo Ferrer · <a href="/">Ver sitio</a></p>
+<!-- Header -->
+<div class="header-actions">
+  <div class="header-left">
+    <h1>Panel de Administracion</h1>
+    <p class="subtitle">Baby Shower Olivo Ferrer</p>
+  </div>
+  <div class="header-right">
+    <a href="/" class="btn btn-outline">Ir al Home</a>
+    <button class="btn btn-navy" onclick="openAddModal()">+ Agregar Regalo</button>
+  </div>
+</div>
 
 <div class="tabs">
   <button class="tab active" onclick="switchTab('gifts',this)">Regalos</button>
@@ -103,7 +153,7 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Categoría</th>
+          <th>Categoria</th>
           <th>Nombre</th>
           <th>Tienda</th>
           <th>Precio</th>
@@ -123,8 +173,100 @@
   <div class="rsvp-grid" id="rsvpGrid"></div>
 </div>
 
+<!-- ADD GIFT MODAL -->
+<div class="modal" id="addModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeAddModal()">&times;</button>
+    <h2>Agregar Nuevo Regalo</h2>
+    <form id="addForm" onsubmit="return submitAddGift(event)">
+      <div class="form-group">
+        <label for="addName">Nombre *</label>
+        <input type="text" id="addName" required>
+      </div>
+      <div class="form-group">
+        <label for="addDescription">Descripcion</label>
+        <textarea id="addDescription" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="addLink">Link de compra</label>
+        <input type="url" id="addLink" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label for="addPrice">Precio (CLP)</label>
+        <input type="number" id="addPrice" placeholder="Ej: 25990" min="0">
+      </div>
+      <div class="form-group">
+        <label for="addCat">Categoria</label>
+        <select id="addCat">
+          <option value="">-- Sin categoria --</option>
+          <option value="accesorios">Accesorios</option>
+          <option value="alimentacion">Alimentacion</option>
+          <option value="dormitorio">Dormitorio</option>
+          <option value="higiene">Higiene</option>
+          <option value="ropa">Ropa</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="addStore">Tienda</label>
+        <input type="text" id="addStore" placeholder="Ej: Infanti, Carestino...">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" onclick="closeAddModal()">Cancelar</button>
+        <button type="submit" class="btn-submit">Agregar Regalo</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- EDIT GIFT MODAL -->
+<div class="modal" id="editModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeEditModal()">&times;</button>
+    <h2>Editar Regalo</h2>
+    <form id="editForm" onsubmit="return submitEditGift(event)">
+      <input type="hidden" id="editId">
+      <div class="form-group">
+        <label for="editName">Nombre *</label>
+        <input type="text" id="editName" required>
+      </div>
+      <div class="form-group">
+        <label for="editDescription">Descripcion</label>
+        <textarea id="editDescription" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="editLink">Link de compra</label>
+        <input type="url" id="editLink" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label for="editPrice">Precio (CLP)</label>
+        <input type="number" id="editPrice" placeholder="Ej: 25990" min="0">
+      </div>
+      <div class="form-group">
+        <label for="editCat">Categoria</label>
+        <select id="editCat">
+          <option value="">-- Sin categoria --</option>
+          <option value="accesorios">Accesorios</option>
+          <option value="alimentacion">Alimentacion</option>
+          <option value="dormitorio">Dormitorio</option>
+          <option value="higiene">Higiene</option>
+          <option value="ropa">Ropa</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editStore">Tienda</label>
+        <input type="text" id="editStore" placeholder="Ej: Infanti, Carestino...">
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" onclick="closeEditModal()">Cancelar</button>
+        <button type="submit" class="btn-submit">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
 const fmt = n => n ? n.toLocaleString('es-CL') : '-';
+let allGifts = [];
 
 function switchTab(tab, btn) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -136,10 +278,10 @@ function switchTab(tab, btn) {
 // ─── Load gifts ───
 async function loadGifts() {
   const res = await fetch('/api/gifts');
-  const gifts = await res.json();
+  allGifts = await res.json();
 
-  const total = gifts.length;
-  const available = gifts.filter(g => g.status !== 'Ya elegido').length;
+  const total = allGifts.length;
+  const available = allGifts.filter(g => g.status !== 'Ya elegido').length;
   const claimed = total - available;
 
   document.getElementById('giftStats').innerHTML = `
@@ -148,7 +290,7 @@ async function loadGifts() {
     <div class="stat"><div class="stat-val">${claimed}</div><div class="stat-label">Elegidos</div></div>
   `;
 
-  document.getElementById('giftsTable').innerHTML = gifts.map(g => {
+  document.getElementById('giftsTable').innerHTML = allGifts.map(g => {
     const isClaimed = g.status === 'Ya elegido';
     const claimed = g.claimedBy;
     return `<tr>
@@ -161,18 +303,158 @@ async function loadGifts() {
         ${g.priority ? ` <span class="badge badge-priority">${g.priority}</span>` : ''}</td>
       <td>${claimed ? `<div class="claimed-info"><strong>${claimed.nombre} ${claimed.apellido}</strong><br>${claimed.email}<br>${claimed.telefono || ''}<br>${new Date(claimed.fecha).toLocaleDateString('es-CL')}</div>` : '-'}</td>
       <td>
-        ${isClaimed ? `<button class="btn-sm release" onclick="releaseGift(${g.id})">Liberar</button>` : ''}
-        ${g.link1 ? `<a class="btn-sm" href="${g.link1}" target="_blank">Ver</a>` : ''}
+        <div class="action-buttons">
+          ${g.link1 ? `<a class="btn-sm" href="${g.link1}" target="_blank">Ver</a>` : ''}
+          <button class="btn-sm edit" onclick="openEditModal(${g.id})">Editar</button>
+          ${isClaimed ? `<button class="btn-sm release" onclick="releaseGift(${g.id})">Liberar</button>` : ''}
+          <button class="btn-sm danger" onclick="deleteGift(${g.id}, '${g.name.replace(/'/g, "\\'")}')">Eliminar</button>
+        </div>
       </td>
     </tr>`;
   }).join('');
 }
 
+// ─── Release gift ───
 async function releaseGift(id) {
   if (!confirm('¿Liberar este regalo?')) return;
-  await fetch('/api/release', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({giftId: id}) });
-  loadGifts();
+  try {
+    const res = await fetch('/api/release', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({giftId: id}) });
+    const data = await res.json();
+    if (res.ok) {
+      loadGifts();
+    } else {
+      alert('Error: ' + (data.error || 'No se pudo liberar'));
+    }
+  } catch (err) {
+    alert('Error de conexion');
+  }
 }
+
+// ─── Delete gift ───
+async function deleteGift(id, name) {
+  if (!confirm(`¿Eliminar el regalo "${name}"?\n\nEsta accion no se puede deshacer.`)) return;
+  try {
+    const res = await fetch('/api/delete-gift', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({giftId: id}) });
+    const data = await res.json();
+    if (res.ok) {
+      loadGifts();
+    } else {
+      alert('Error: ' + (data.error || 'No se pudo eliminar'));
+    }
+  } catch (err) {
+    alert('Error de conexion');
+  }
+}
+
+// ─── Add gift modal ───
+function openAddModal() {
+  document.getElementById('addForm').reset();
+  document.getElementById('addModal').classList.add('active');
+}
+
+function closeAddModal() {
+  document.getElementById('addModal').classList.remove('active');
+}
+
+async function submitAddGift(e) {
+  e.preventDefault();
+  const name = document.getElementById('addName').value.trim();
+  const description = document.getElementById('addDescription').value.trim();
+  const link1 = document.getElementById('addLink').value.trim();
+  const price = document.getElementById('addPrice').value.trim();
+  const cat = document.getElementById('addCat').value;
+  const store = document.getElementById('addStore').value.trim();
+
+  if (!name) { alert('El nombre es obligatorio'); return false; }
+
+  try {
+    const res = await fetch('/api/add-gift', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name,
+        description: description || '',
+        link1: link1 || '',
+        price: price ? parseInt(price) : null,
+        cat: cat || '',
+        store: store || ''
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      closeAddModal();
+      loadGifts();
+    } else {
+      alert('Error: ' + (data.error || 'No se pudo agregar'));
+    }
+  } catch (err) {
+    alert('Error de conexion');
+  }
+  return false;
+}
+
+// ─── Edit gift modal ───
+function openEditModal(id) {
+  const gift = allGifts.find(g => g.id === id);
+  if (!gift) return;
+
+  document.getElementById('editId').value = gift.id;
+  document.getElementById('editName').value = gift.name || '';
+  document.getElementById('editDescription').value = gift.description || '';
+  document.getElementById('editLink').value = gift.link1 || '';
+  document.getElementById('editPrice').value = gift.price || '';
+  document.getElementById('editCat').value = gift.cat || '';
+  document.getElementById('editStore').value = gift.store || '';
+
+  document.getElementById('editModal').classList.add('active');
+}
+
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('active');
+}
+
+async function submitEditGift(e) {
+  e.preventDefault();
+  const giftId = parseInt(document.getElementById('editId').value);
+  const name = document.getElementById('editName').value.trim();
+  const description = document.getElementById('editDescription').value.trim();
+  const link1 = document.getElementById('editLink').value.trim();
+  const price = document.getElementById('editPrice').value.trim();
+  const cat = document.getElementById('editCat').value;
+  const store = document.getElementById('editStore').value.trim();
+
+  if (!name) { alert('El nombre es obligatorio'); return false; }
+
+  try {
+    const res = await fetch('/api/update-gift', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        giftId,
+        name,
+        description: description || '',
+        link1: link1 || '',
+        price: price ? parseInt(price) : null,
+        cat: cat || '',
+        store: store || ''
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      closeEditModal();
+      loadGifts();
+    } else {
+      alert('Error: ' + (data.error || 'No se pudo actualizar'));
+    }
+  } catch (err) {
+    alert('Error de conexion');
+  }
+  return false;
+}
+
+// Close modals on backdrop click
+document.getElementById('addModal').addEventListener('click', e => { if (e.target.id === 'addModal') closeAddModal(); });
+document.getElementById('editModal').addEventListener('click', e => { if (e.target.id === 'editModal') closeEditModal(); });
 
 // ─── Load RSVPs ───
 async function loadRsvps() {
@@ -193,15 +475,15 @@ async function loadRsvps() {
   document.getElementById('rsvpGrid').innerHTML = rsvps.length
     ? rsvps.map(r => `
       <div class="rsvp-card ${r.asiste ? 'attending' : 'not-attending'}">
-        <div class="rsvp-name">${r.asiste ? '✓' : '✗'} ${r.nombre} ${r.apellido || ''}</div>
+        <div class="rsvp-name">${r.asiste ? '&#10003;' : '&#10007;'} ${r.nombre} ${r.apellido || ''}</div>
         <div class="rsvp-email">${r.email}</div>
         <div class="rsvp-detail">
           ${r.asiste ? `Asiste${r.acompanantes > 0 ? ` (+${r.acompanantes} acomp.)` : ''}` : 'No asiste'}
-          · ${new Date(r.fecha).toLocaleDateString('es-CL')}
+          &middot; ${new Date(r.fecha).toLocaleDateString('es-CL')}
         </div>
         ${r.mensaje ? `<div class="rsvp-msg">"${r.mensaje}"</div>` : ''}
       </div>`).join('')
-    : '<p style="color:var(--muted);padding:20px">Aún no hay confirmaciones.</p>';
+    : '<p style="color:var(--muted);padding:20px">Aun no hay confirmaciones.</p>';
 }
 
 // ─── Auth ───
@@ -223,10 +505,10 @@ async function handleAuth(e) {
       document.getElementById('authOverlay').classList.add('hidden');
       initAdmin();
     } else {
-      errEl.textContent = data.error || 'Contraseña incorrecta';
+      errEl.textContent = data.error || 'Contrasena incorrecta';
     }
   } catch (err) {
-    errEl.textContent = 'Error de conexión';
+    errEl.textContent = 'Error de conexion';
   }
   return false;
 }
