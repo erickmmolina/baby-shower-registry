@@ -305,6 +305,23 @@ app.post('/api/event', async (req, res) => {
     }
 });
 
+// --- Image proxy ---
+app.get('/api/img', async (req, res) => {
+    const { url } = req.query;
+    if (!url) return res.status(400).send('Missing url');
+    try {
+        const r = await fetch(url, {
+            headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'image/*,*/*', 'Referer': new URL(url).origin }
+        });
+        if (!r.ok) return res.status(r.status).send('Failed');
+        const ct = r.headers.get('content-type') || 'image/jpeg';
+        const buf = Buffer.from(await r.arrayBuffer());
+        res.setHeader('Content-Type', ct);
+        res.setHeader('Cache-Control', 'public, max-age=604800');
+        res.send(buf);
+    } catch (e) { res.status(500).send('Proxy error'); }
+});
+
 // --- Routes ---
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));

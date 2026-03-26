@@ -111,12 +111,13 @@ function renderGifts() {
     const claimedName = g.claimedBy ? `${g.claimedBy.nombre} ${g.claimedBy.apellido}` : '';
 
     const hasImg = g.image && g.image.startsWith('http');
+    const imgSrc = hasImg ? `/api/img?url=${encodeURIComponent(g.image)}` : '';
 
     return `
       <div class="gift-card${isReserved ? ' reserved' : ''}">
         <div class="gift-img-wrap${hasImg ? '' : ' no-img'}">
           ${hasImg
-            ? `<img src="${g.image}" alt="${g.name}" loading="lazy" onerror="this.parentElement.classList.add('no-img');this.remove();this.parentElement.innerHTML='<span class=gift-emoji>${emoji}</span>'+this.parentElement.innerHTML">`
+            ? `<img src="${imgSrc}" alt="${g.name}" loading="lazy" onerror="this.parentElement.classList.add('no-img');this.remove();this.parentElement.innerHTML='<span class=gift-emoji>${emoji}</span>'+this.parentElement.innerHTML">`
             : `<span class="gift-emoji">${emoji}</span>`}
           ${g.priority ? `<span class="gift-priority">${g.priority === 'alta' ? 'Prioridad alta' : g.priority}</span>` : ''}
           <span class="gift-cat-badge">${catLabels[g.cat] || g.cat}</span>
