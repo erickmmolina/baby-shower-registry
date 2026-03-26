@@ -258,6 +258,19 @@ app.post('/api/rsvps', async (req, res) => {
     }
 });
 
+// --- Admin auth ---
+app.post('/api/admin-auth', (req, res) => {
+    const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+    if (!ADMIN_PASSWORD) {
+        return res.json({ success: true });
+    }
+    const { password } = req.body || {};
+    if (password === ADMIN_PASSWORD) {
+        return res.json({ success: true });
+    }
+    return res.status(401).json({ success: false, error: 'Contraseña incorrecta' });
+});
+
 // --- Event info ---
 app.get('/api/event', async (req, res) => {
     try {

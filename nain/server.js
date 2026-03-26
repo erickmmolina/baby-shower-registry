@@ -377,6 +377,24 @@ app.post('/api/event', async (req, res) => {
     }
 });
 
+// POST - Autenticación del admin
+app.post('/api/admin-auth', (req, res) => {
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    // Si no hay contraseña configurada, permitir acceso (dev local)
+    if (!adminPassword) {
+        return res.json({ success: true });
+    }
+
+    const { password } = req.body || {};
+
+    if (password === adminPassword) {
+        return res.json({ success: true });
+    }
+
+    return res.status(401).json({ success: false, error: 'Contraseña incorrecta' });
+});
+
 // Ruta principal - servir el HTML
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));

@@ -266,6 +266,66 @@
             background: #dfe6e9;
         }
 
+        /* Auth overlay */
+        #authOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        #authOverlay.hidden {
+            display: none;
+        }
+
+        .auth-box {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .auth-box h2 {
+            color: #6FB1E8;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-box p {
+            color: #636e72;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-box input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .auth-box input[type="password"]:focus {
+            outline: none;
+            border-color: #6FB1E8;
+        }
+
+        .auth-error {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
@@ -290,6 +350,19 @@
 </head>
 
 <body>
+    <!-- Auth overlay -->
+    <div id="authOverlay">
+        <div class="auth-box">
+            <h2>🔒 Acceso Administrador</h2>
+            <p>Ingresa la contraseña para acceder al panel</p>
+            <form id="authForm" onsubmit="submitAuth(event)">
+                <input type="password" id="authPassword" placeholder="Contraseña" autocomplete="off" autofocus>
+                <div class="auth-error" id="authError">Contraseña incorrecta</div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Ingresar</button>
+            </form>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header-actions">
             <div class="header-left">
@@ -821,8 +894,63 @@
             }
         });
 
+        // Auth
+        async function checkAuth() {
+            if (sessionStorage.getItem('adminAuth') === 'true') {
+                showAdmin();
+                return;
+            }
+            // Verificar si el servidor requiere auth
+            try {
+                const res = await fetch(`${API_URL}/admin-auth`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: '' })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    // No se requiere contraseña (ADMIN_PASSWORD no configurada)
+                    sessionStorage.setItem('adminAuth', 'true');
+                    showAdmin();
+                }
+            } catch (e) {
+                // Error de red, mostrar el formulario de auth de todos modos
+            }
+        }
+
+        async function submitAuth(e) {
+            e.preventDefault();
+            const password = document.getElementById('authPassword').value;
+            const errorEl = document.getElementById('authError');
+            errorEl.style.display = 'none';
+
+            try {
+                const res = await fetch(`${API_URL}/admin-auth`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    sessionStorage.setItem('adminAuth', 'true');
+                    showAdmin();
+                } else {
+                    errorEl.style.display = 'block';
+                    document.getElementById('authPassword').value = '';
+                }
+            } catch (err) {
+                errorEl.textContent = 'Error de conexión';
+                errorEl.style.display = 'block';
+            }
+        }
+
+        function showAdmin() {
+            document.getElementById('authOverlay').classList.add('hidden');
+            loadGifts();
+        }
+
         // Cargar datos al iniciar
-        document.addEventListener('DOMContentLoaded', loadGifts);
+        document.addEventListener('DOMContentLoaded', checkAuth);
     </script>
 
     <!-- Modal para gestionar imágenes -->

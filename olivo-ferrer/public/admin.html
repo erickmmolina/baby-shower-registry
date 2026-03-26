@@ -59,9 +59,33 @@
     .rsvp-email{font-size:.78rem;color:var(--muted);margin-bottom:8px}
     .rsvp-detail{font-size:.78rem;color:var(--text);line-height:1.6}
     .rsvp-msg{font-style:italic;color:var(--muted);font-size:.78rem;margin-top:6px;padding-top:6px;border-top:1px solid #f0f2f5}
+    /* Auth overlay */
+    .auth-overlay{position:fixed;inset:0;background:var(--navy);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity .3s}
+    .auth-overlay.hidden{opacity:0;pointer-events:none}
+    .auth-box{background:var(--white);border-radius:16px;padding:40px 32px;max-width:360px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+    .auth-box h2{font-size:1.2rem;color:var(--navy);margin-bottom:6px;font-weight:600}
+    .auth-box p{font-size:.82rem;color:var(--muted);margin-bottom:24px}
+    .auth-box input{width:100%;padding:12px 16px;border:1px solid #d0d8e0;border-radius:10px;font-family:inherit;font-size:.9rem;outline:none;transition:border-color .2s}
+    .auth-box input:focus{border-color:var(--sky)}
+    .auth-box button{width:100%;margin-top:14px;padding:12px;border:none;border-radius:10px;background:var(--navy);color:var(--white);font-family:inherit;font-size:.88rem;font-weight:500;cursor:pointer;transition:background .2s}
+    .auth-box button:hover{background:#1a2e42}
+    .auth-error{color:var(--red);font-size:.78rem;margin-top:10px;min-height:1.2em}
   </style>
 </head>
 <body>
+
+<!-- Auth overlay -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <h2>Acceso Admin</h2>
+    <p>Ingresa la contraseña para continuar</p>
+    <form id="authForm" onsubmit="return handleAuth(event)">
+      <input type="password" id="authPassword" placeholder="Contraseña" autocomplete="current-password" autofocus>
+      <button type="submit">Ingresar</button>
+      <div class="auth-error" id="authError"></div>
+    </form>
+  </div>
+</div>
 
 <h1>Panel de Administración</h1>
 <p class="subtitle">Baby Shower Olivo Ferrer · <a href="/">Ver sitio</a></p>
@@ -180,9 +204,43 @@ async function loadRsvps() {
     : '<p style="color:var(--muted);padding:20px">Aún no hay confirmaciones.</p>';
 }
 
-// Init
-loadGifts();
-loadRsvps();
+// ─── Auth ───
+async function handleAuth(e) {
+  e.preventDefault();
+  const pw = document.getElementById('authPassword').value;
+  const errEl = document.getElementById('authError');
+  errEl.textContent = '';
+
+  try {
+    const res = await fetch('/api/admin-auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw })
+    });
+    const data = await res.json();
+    if (data.success) {
+      sessionStorage.setItem('adminAuth', 'true');
+      document.getElementById('authOverlay').classList.add('hidden');
+      initAdmin();
+    } else {
+      errEl.textContent = data.error || 'Contraseña incorrecta';
+    }
+  } catch (err) {
+    errEl.textContent = 'Error de conexión';
+  }
+  return false;
+}
+
+function initAdmin() {
+  loadGifts();
+  loadRsvps();
+}
+
+// Check session on load
+if (sessionStorage.getItem('adminAuth') === 'true') {
+  document.getElementById('authOverlay').classList.add('hidden');
+  initAdmin();
+}
 </script>
 </body>
 </html>
