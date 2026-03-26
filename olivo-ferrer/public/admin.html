@@ -58,6 +58,8 @@
     .btn-sm.danger:hover{background:var(--red);color:var(--white)}
     .btn-sm.release{color:var(--gold);border-color:var(--gold)}
     .btn-sm.release:hover{background:var(--gold);color:var(--white)}
+    .btn-sm.img-btn{color:var(--gold);border-color:var(--gold);font-size:.85rem;padding:5px 10px}
+    .btn-sm.img-btn:hover{background:var(--gold);color:var(--white)}
     .btn-sm.edit{color:var(--navy);border-color:var(--navy)}
     .btn-sm.edit:hover{background:var(--navy);color:var(--white)}
 
@@ -210,9 +212,37 @@
         <label for="addStore">Tienda</label>
         <input type="text" id="addStore" placeholder="Ej: Infanti, Carestino...">
       </div>
+      <div class="form-group">
+        <label for="addImage">URL de imagen (opcional)</label>
+        <input type="url" id="addImage" placeholder="https://...imagen-del-producto.jpg">
+      </div>
       <div class="form-actions">
         <button type="button" class="btn-cancel" onclick="closeAddModal()">Cancelar</button>
         <button type="submit" class="btn-submit">Agregar Regalo</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- IMAGE MODAL -->
+<div class="modal" id="imageModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeImageModal()">&times;</button>
+    <h2>Imagen del Regalo</h2>
+    <div id="imagePreview" style="margin:16px 0;text-align:center;min-height:60px">
+      <p style="color:var(--muted);font-size:.85rem">Sin imagen</p>
+    </div>
+    <form id="imageForm" onsubmit="return submitImage(event)">
+      <input type="hidden" id="imageGiftId">
+      <div class="form-group">
+        <label for="imageUrl">URL de la imagen</label>
+        <input type="url" id="imageUrl" placeholder="https://...imagen-del-producto.jpg">
+        <small style="color:var(--muted);font-size:.72rem">Pega la URL de la imagen del producto desde la tienda</small>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" onclick="closeImageModal()">Cancelar</button>
+        <button type="button" class="btn-sm danger" onclick="removeImage()" style="padding:10px 16px">Quitar imagen</button>
+        <button type="submit" class="btn-submit">Guardar Imagen</button>
       </div>
     </form>
   </div>
@@ -304,6 +334,7 @@ async function loadGifts() {
       <td>${claimed ? `<div class="claimed-info"><strong>${claimed.nombre} ${claimed.apellido}</strong><br>${claimed.email}<br>${claimed.telefono || ''}<br>${new Date(claimed.fecha).toLocaleDateString('es-CL')}</div>` : '-'}</td>
       <td>
         <div class="action-buttons">
+          <button class="btn-sm img-btn" onclick="openImageModal(${g.id})" title="${g.image ? 'Tiene imagen' : 'Sin imagen'}">${g.image ? '🖼' : '📷'}</button>
           ${g.link1 ? `<a class="btn-sm" href="${g.link1}" target="_blank">Ver</a>` : ''}
           <button class="btn-sm edit" onclick="openEditModal(${g.id})">Editar</button>
           ${isClaimed ? `<button class="btn-sm release" onclick="releaseGift(${g.id})">Liberar</button>` : ''}
@@ -452,9 +483,58 @@ async function submitEditGift(e) {
   return false;
 }
 
+// ─── Image modal ───
+function openImageModal(id) {
+  const gift = allGifts.find(g => g.id === id);
+  if (!gift) return;
+  document.getElementById('imageGiftId').value = gift.id;
+  document.getElementById('imageUrl').value = gift.image || '';
+  const preview = document.getElementById('imagePreview');
+  if (gift.image) {
+    preview.innerHTML = `<img src="/api/img?url=${encodeURIComponent(gift.image)}" style="max-width:100%;max-height:200px;border-radius:8px;border:1px solid #e8edf2" onerror="this.outerHTML='<p style=color:var(--muted)>No se pudo cargar la imagen</p>'">`;
+  } else {
+    preview.innerHTML = '<p style="color:var(--muted);font-size:.85rem">Sin imagen configurada</p>';
+  }
+  document.getElementById('imageModal').classList.add('active');
+}
+
+function closeImageModal() {
+  document.getElementById('imageModal').classList.remove('active');
+}
+
+async function submitImage(e) {
+  e.preventDefault();
+  const giftId = parseInt(document.getElementById('imageGiftId').value);
+  const image = document.getElementById('imageUrl').value.trim();
+  try {
+    const res = await fetch('/api/update-gift', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ giftId, name: allGifts.find(g=>g.id===giftId)?.name, image: image || null })
+    });
+    if (res.ok) { closeImageModal(); loadGifts(); }
+    else { const d = await res.json(); alert('Error: ' + (d.error || 'Fallo')); }
+  } catch (err) { alert('Error de conexion'); }
+  return false;
+}
+
+async function removeImage() {
+  const giftId = parseInt(document.getElementById('imageGiftId').value);
+  document.getElementById('imageUrl').value = '';
+  try {
+    const res = await fetch('/api/update-gift', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ giftId, name: allGifts.find(g=>g.id===giftId)?.name, image: null })
+    });
+    if (res.ok) { closeImageModal(); loadGifts(); }
+  } catch (err) { alert('Error'); }
+}
+
 // Close modals on backdrop click
 document.getElementById('addModal').addEventListener('click', e => { if (e.target.id === 'addModal') closeAddModal(); });
 document.getElementById('editModal').addEventListener('click', e => { if (e.target.id === 'editModal') closeEditModal(); });
+document.getElementById('imageModal').addEventListener('click', e => { if (e.target.id === 'imageModal') closeImageModal(); });
 
 // ─── Load RSVPs ───
 async function loadRsvps() {
