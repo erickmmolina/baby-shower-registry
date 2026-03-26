@@ -1,124 +1,81 @@
-# 🍼 Sistema de Lista de Regalos - Baby Shower
+# Baby Shower Registry - Monorepo
 
-Sistema web completo para gestionar la lista de regalos de baby shower con selección y bloqueo automático de regalos.
+Monorepo con listas de regalos y RSVP para baby showers. Cada proyecto es una carpeta independiente que se despliega como un proyecto separado en Vercel.
 
-## ✨ Características
+## Proyectos
 
-- 🎁 **Interfaz moderna y responsiva** con diseño atractivo
-- 🔒 **Bloqueo automático** de regalos seleccionados
-- 📱 **Responsive** - funciona en móviles, tablets y desktop
-- 🎨 **Diseño personalizado** con tema baby shower (colores azules)
-- 🔄 **Actualización en tiempo real** del estado de los regalos
-- 📋 **Filtros** para ver regalos disponibles, ya elegidos o todos
-- 🔗 **Múltiples opciones de compra** para cada regalo
-- ✅ **Validación de formularios** para evitar errores
-- 💾 **Persistencia de datos** con Redis Cloud
+| Carpeta | Baby | Estado |
+|---------|------|--------|
+| `nain/` | Baby Shower de Nain | Desplegado |
+| `olivo-ferrer/` | Baby Shower Olivo Ferrer | Nuevo |
 
-## 🌐 URLs de la Aplicación
+## Arquitectura
 
-- **Para invitados:** https://nain-bravo.vercel.app
-- **Panel admin:** https://nain-bravo.vercel.app/admin
-- **Repositorio GitHub:** https://github.com/erickmmolina/baby-shower-registry
+Cada proyecto es **auto-contenido** con:
 
-## 🚀 Deployment
+```
+proyecto/
+├── api/              ← Serverless functions (Vercel)
+│   ├── _helpers.js   ← Redis connection + helpers
+│   ├── gifts.js      ← GET /api/gifts
+│   ├── claim.js      ← POST /api/claim
+│   ├── release.js    ← POST /api/release
+│   ├── rsvps.js      ← GET/POST /api/rsvps
+│   ├── event.js      ← GET/POST /api/event
+│   ├── add-gift.js   ← POST /api/add-gift
+│   ├── delete-gift.js
+│   └── update-gift.js
+├── public/           ← Frontend (static files)
+│   ├── index.html    ← Página principal
+│   ├── admin.html    ← Panel de administración
+│   ├── styles.css
+│   └── app.js
+├── gifts.json        ← Data de regalos (default)
+├── rsvps.json        ← RSVPs (local dev)
+├── server.js         ← Servidor Express (dev local)
+├── package.json
+└── vercel.json
+```
 
-Esta aplicación está desplegada en Vercel con Redis Cloud para el almacenamiento de datos.
+## Deploy en Vercel
 
-Ver documentación completa en `DEPLOY_VERCEL.md`
+Cada proyecto se despliega como un **proyecto separado** en Vercel, todos desde el mismo repo:
 
-## 🛠️ Tecnologías
+1. En Vercel, crear un nuevo proyecto
+2. Conectar al repo `baby-shower-registry`
+3. Configurar **Root Directory** → `nombre-carpeta/` (ej: `olivo-ferrer/`)
+4. Agregar variable de entorno `REDIS_URL` (Vercel KV)
+5. Deploy
 
-- Frontend: HTML5, CSS3, JavaScript (Vanilla)
-- Backend: Vercel Serverless Functions (Node.js)
-- Base de datos: Redis Cloud
-- Deployment: Vercel con auto-deployment desde GitHub
+## Agregar un nuevo baby shower
 
-## 📱 Uso
+1. Copiar una carpeta existente (ej: `cp -r olivo-ferrer/ nuevo-proyecto/`)
+2. Editar `gifts.json` con los regalos del nuevo baby shower
+3. Editar `api/event.js` con los datos del evento
+4. Editar `api/_helpers.js` → cambiar el `PREFIX` para las keys de Redis
+5. Personalizar `public/` (HTML, CSS, textos, colores)
+6. Actualizar `package.json` con el nombre del proyecto
+7. Desplegar en Vercel con Root Directory apuntando a la nueva carpeta
 
-### Para los invitados:
-1. Acceder a https://nain-bravo.vercel.app
-2. Ver todos los regalos disponibles
-3. Click en "Elegir este regalo"
-4. Completar datos personales
-5. Confirmar selección
-
-### Para administración:
-1. Acceder a https://nain-bravo.vercel.app/admin
-2. Ver estadísticas y regalos
-3. Liberar regalos si es necesario
-
-## 💻 Desarrollo Local
+## Desarrollo local
 
 ```bash
-# Instalar dependencias
+cd nombre-proyecto/
 npm install
-
-# Ejecutar servidor local
-npm start
-
-# La app estará en http://localhost:3000
+node server.js
+# Abrir http://localhost:3000
+# Admin: http://localhost:3000/admin
 ```
 
-## 🎨 Personalización
+## API Endpoints
 
-### Cambiar colores:
-Edita `public/styles.css` y modifica las variables CSS:
-
-```css
-:root {
-    --primary-color: #6FB1E8;
-    --primary-dark: #5A9FD4;
-    --secondary-color: #a8d8ea;
-    --accent-color: #89CFF0;
-}
-```
-
-### Agregar/modificar regalos:
-Los regalos se inicializan automáticamente la primera vez en Redis Cloud desde `api/gifts.js`
-
-## 📦 Estructura del Proyecto
-
-```
-baby-shower-registry/
-├── api/                    # Serverless Functions
-│   ├── gifts.js           # GET regalos
-│   ├── claim.js           # POST reclamar regalo
-│   └── release.js         # POST liberar regalo
-├── public/                # Frontend
-│   ├── index.html         # Página principal
-│   ├── admin.html         # Panel de administración
-│   ├── styles.css         # Estilos
-│   └── app.js            # Lógica JavaScript
-├── vercel.json           # Configuración de Vercel
-├── package.json          # Dependencias
-└── README.md            # Este archivo
-```
-
-## 🔄 Actualizaciones
-
-Para actualizar la aplicación:
-
-```bash
-# Hacer cambios en el código
-git add .
-git commit -m "Descripción de cambios"
-git push
-
-# Vercel despliega automáticamente en ~30 segundos
-```
-
-## 🆓 Costos
-
-- Vercel: **GRATIS** (Plan Hobby)
-- GitHub: **GRATIS**
-- Redis Cloud: **GRATIS** (30 MB)
-
-**Total: $0 USD/mes** 🎉
-
-## 📝 Licencia
-
-Este proyecto es de código abierto y puede ser usado libremente.
-
----
-
-¡Disfruta tu baby shower! 🍼👶✨
+| Método | Ruta | Descripción |
+|--------|------|-------------|
+| GET | `/api/gifts` | Listar regalos |
+| POST | `/api/claim` | Reservar regalo |
+| POST | `/api/release` | Liberar regalo |
+| POST | `/api/add-gift` | Agregar regalo |
+| POST | `/api/delete-gift` | Eliminar regalo |
+| POST | `/api/update-gift` | Actualizar regalo |
+| GET/POST | `/api/rsvps` | Confirmaciones |
+| GET/POST | `/api/event` | Info del evento |

@@ -1,0 +1,11 @@
+[
+  {
+    "nombre": "Test",
+    "apellido": "",
+    "email": "test@test.com",
+    "asiste": true,
+    "acompanantes": 2,
+    "mensaje": "",
+    "fecha": "2026-03-26T15:08:48.172Z"
+  }
+]

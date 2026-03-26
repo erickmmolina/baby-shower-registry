@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baby Shower · Olivo Ferrer</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="stars-layer" id="starsLayer"></div>
+  <div class="floaty" style="width:320px;height:320px;background:var(--sky);top:-100px;right:-100px;animation-duration:9s"></div>
+  <div class="floaty" style="width:240px;height:240px;background:var(--mint);bottom:-80px;left:-80px;animation-duration:11s;animation-delay:-3s"></div>
+  <div class="floaty" style="width:180px;height:180px;background:var(--gold);bottom:18%;right:8%;animation-duration:13s;animation-delay:-5s"></div>
+
+  <div class="hero-badge">Baby Shower · Abril 2025</div>
+  <div class="hero-monogram">OF</div>
+  <h1 class="hero-title">Olivo <em>Ferrer</em></h1>
+  <div class="hero-divider"><span></span><div class="hero-divider-dot"></div><span></span></div>
+  <p class="hero-sub">Pronto llegará a llenarnos de amor. Ayúdanos a recibirlo eligiendo uno de sus regalitos</p>
+  <div class="hero-chips">
+    <span class="chip chip-date">Sábado 25 de Abril</span>
+    <span class="chip chip-loc">Vitacura</span>
+    <span class="chip chip-code">Abrigado</span>
+  </div>
+  <a href="#lista" class="hero-scroll"><span>Ver regalos</span><div class="scroll-line"></div></a>
+</section>
+
+<!-- LISTA DE REGALOS -->
+<section class="section" id="lista">
+  <p class="section-eyebrow">Lista de deseos</p>
+  <h2 class="section-title">Los <em>Regalitos</em> de Olivo</h2>
+  <p class="section-sub">Elige un regalo y resérvalo para que nadie más lo tome</p>
+  <div class="accent-line"></div>
+
+  <div class="cat-tabs" id="catTabs"></div>
+
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all">Todos</button>
+    <button class="filter-btn" data-filter="available">Disponibles</button>
+    <button class="filter-btn" data-filter="reserved">Ya elegidos</button>
+  </div>
+
+  <div class="gift-grid" id="giftGrid"></div>
+</section>
+
+<!-- EVENTO -->
+<section class="event-section" id="evento">
+  <div class="event-inner">
+    <p class="section-eyebrow">El gran día</p>
+    <h2 class="section-title">¡Te <em>Esperamos!</em></h2>
+    <p class="section-sub">Una tarde llena de amor para celebrar la llegada de Olivo</p>
+    <div class="accent-line" style="background:linear-gradient(90deg,transparent,var(--sky-light),transparent)"></div>
+    <div class="event-cards" id="eventCards"></div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section class="rsvp-section" id="rsvp">
+  <div class="rsvp-inner">
+    <p class="section-eyebrow" style="color:var(--sky)">Confirmación</p>
+    <h2 class="section-title">¿Podrás <em>venir?</em></h2>
+    <p class="section-sub">Tu presencia es lo que más nos importa</p>
+    <div class="accent-line"></div>
+    <p class="rsvp-desc">Nos encantaría contar contigo para celebrar la llegada de Olivo. Confirma tu asistencia para poder organizarnos.</p>
+    <div class="rsvp-btns" id="rsvpBtns">
+      <button class="btn-yes" onclick="openRsvpModal(true)">Sí, asistiré</button>
+      <button class="btn-no" onclick="openRsvpModal(false)">No podré asistir</button>
+    </div>
+  </div>
+</section>
+
+<footer>Hecho con mucho amor para <span>Baby Olivo Ferrer</span> · Abril 2025</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
