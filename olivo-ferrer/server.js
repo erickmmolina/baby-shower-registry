@@ -282,7 +282,7 @@ app.get('/api/event', async (req, res) => {
         }
         res.json({
             date: 'Sábado 25 de Abril, 2026',
-            time: '14:30 - 18:00 hrs',
+            time: '16:00 - 20:00 hrs',
             location: 'Quincho Edificio Quillay',
             address: 'Av. Club del Campo 172, Vitacura',
             mapLink: 'https://maps.google.com/?q=Av+Club+del+Campo+172+Vitacura+Santiago',
@@ -329,5 +329,5 @@ app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.ht
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'admin.html')));
 
 app.listen(PORT, () => {
-    console.log(`Baby Shower Olivo Ferrer en http://localhost:${PORT}`);
+    console.log(`Baby Shower Matías Ignacio en http://localhost:${PORT}`);
 });

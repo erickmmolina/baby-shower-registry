@@ -28,16 +28,17 @@ const fmt = n => n.toLocaleString('es-CL');
 // ─── Init ───
 document.addEventListener('DOMContentLoaded', async () => {
   createStars();
+  createEventStars();
+  createFamilyStars();
   startCountdown();
   setupFilterListeners();
   setupSortListeners();
   await loadGifts();
-  await loadEvent();
 });
 
 // ─── Countdown ───
 function startCountdown() {
-  const target = new Date('2026-04-25T14:30:00-04:00').getTime();
+  const target = new Date('2026-04-25T16:00:00-04:00').getTime();
   const container = document.getElementById('countdown');
 
   function update() {
@@ -69,13 +70,13 @@ function createStars() {
   const sl = document.getElementById('starsLayer');
 
   // Layered star field — dim distant stars + bright near stars
-  for (let i = 0; i < 90; i++) {
+  for (let i = 0; i < 160; i++) {
     const s = document.createElement('div');
     const isBright = Math.random() < .15;
     const isBlue = Math.random() < .2;
     const size = isBright ? 2 + Math.random() * 2 : 1 + Math.random();
     s.className = `star${isBright ? ' star--bright' : ''}${isBlue ? ' star--blue' : ''}`;
-    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*5}s;animation-delay:-${Math.random()*6}s;width:${size}px;height:${size}px`;
+    s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-duration:${2 + Math.random() * 5}s;animation-delay:-${Math.random() * 6}s;width:${size}px;height:${size}px`;
     sl.appendChild(s);
   }
 
@@ -88,7 +89,7 @@ function createShootingStars() {
   function launchStar() {
     const star = document.createElement('div');
     star.className = 'shooting-star';
-    star.style.cssText = `top:${5+Math.random()*40}%;left:${10+Math.random()*60}%;animation:shoot ${.8+Math.random()*.6}s ease-out forwards`;
+    star.style.cssText = `top:${5 + Math.random() * 40}%;left:${10 + Math.random() * 60}%;animation:shoot ${.8 + Math.random() * .6}s ease-out forwards`;
     container.appendChild(star);
     star.addEventListener('animationend', () => star.remove());
     setTimeout(launchStar, 3000 + Math.random() * 6000);
@@ -192,8 +193,8 @@ function renderGifts() {
       <div class="gift-card${isReserved ? ' reserved' : ''}">
         <div class="gift-img-wrap${hasImg ? '' : ' no-img'}">
           ${hasImg
-            ? `<img src="${imgSrc}" alt="${g.name}" loading="lazy" onerror="this.parentElement.classList.add('no-img');this.remove();this.parentElement.innerHTML='<span class=gift-emoji>${emoji}</span>'+this.parentElement.innerHTML">`
-            : `<span class="gift-emoji">${emoji}</span>`}
+        ? `<img src="${imgSrc}" alt="${g.name}" loading="lazy" onerror="this.parentElement.classList.add('no-img');this.remove();this.parentElement.innerHTML='<span class=gift-emoji>${emoji}</span>'+this.parentElement.innerHTML">`
+        : `<span class="gift-emoji">${emoji}</span>`}
           ${g.priority ? `<span class="gift-priority">${g.priority === 'alta' ? 'Prioridad alta' : g.priority}</span>` : ''}
           <span class="gift-cat-badge">${catLabels[g.cat] || g.cat}</span>
         </div>
@@ -217,7 +218,34 @@ function renderGifts() {
   }).join('');
 }
 
-// ─── Load event info ───
+// ─── Event section stars ───
+function createEventStars() {
+  const container = document.getElementById('eventStars');
+  if (!container) return;
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement('div');
+    s.className = 'event-star';
+    const size = 2 + Math.random() * 3;
+    s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;width:${size}px;height:${size}px;animation-duration:${3 + Math.random() * 5}s;animation-delay:-${Math.random() * 6}s`;
+    container.appendChild(s);
+  }
+}
+
+// ─── Family section stars ───
+function createFamilyStars() {
+  const container = document.getElementById('familyStars');
+  if (!container) return;
+  for (let i = 0; i < 50; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const isBright = Math.random() < .12;
+    const size = isBright ? 2 + Math.random() * 2 : 1 + Math.random();
+    s.style.cssText = `left:${Math.random() * 100}%;top:${Math.random() * 100}%;animation-duration:${2 + Math.random() * 5}s;animation-delay:-${Math.random() * 6}s;width:${size}px;height:${size}px`;
+    container.appendChild(s);
+  }
+}
+
+// ─── Load event info (legacy) ───
 async function loadEvent() {
   try {
     const res = await fetch('/api/event');
@@ -324,7 +352,7 @@ async function confirmClaim() {
         <div class="success-modal">
           <div class="success-icon">✓</div>
           <h2 class="success-title">¡Regalo reservado!</h2>
-          <p class="success-msg">Gracias, <strong>${nombre}</strong>. Tu regalo está reservado. ¡Olivo y sus papás te lo agradecen!</p>
+          <p class="success-msg">Gracias, <strong>${nombre}</strong>. Tu regalo está reservado. ¡Matías y sus papás te lo agradecen!</p>
           <button class="btn-close" onclick="closeModal()">¡Listo!</button>
         </div>
       `);
@@ -366,12 +394,12 @@ function launchConfetti() {
 async function shareGift(id) {
   const g = gifts.find(x => x.id === id);
   if (!g) return;
-  const text = `Mira este regalo para el Baby Shower de Olivo: ${g.name}${g.price ? ` - $${fmt(g.price)}` : ''}`;
+  const text = `Mira este regalo para el Baby Shower de Matías Ignacio: ${g.name}${g.price ? ` - $${fmt(g.price)}` : ''}`;
   const url = g.link1;
 
   if (navigator.share) {
     try {
-      await navigator.share({ title: 'Baby Shower Olivo Ferrer', text, url });
+      await navigator.share({ title: 'Baby Shower Matías Ignacio', text, url });
     } catch (e) { /* user cancelled */ }
   } else {
     window.open(`https://wa.me/?text=${encodeURIComponent(text + ' 👉 ' + url)}`, '_blank');
@@ -451,9 +479,9 @@ async function confirmRsvp() {
           <div class="success-icon">${asiste ? '🎉' : '💙'}</div>
           <h2 class="success-title">${asiste ? '¡Confirmado!' : 'Gracias por avisarnos'}</h2>
           <p class="success-msg">${asiste
-            ? `Gracias, <strong>${nombre}</strong>. ¡Te esperamos el 25 de Abril!`
-            : `Gracias, <strong>${nombre}</strong>. Los acompañamos en espíritu.`
-          }</p>
+          ? `Gracias, <strong>${nombre}</strong>. ¡Te esperamos el 25 de Abril!`
+          : `Gracias, <strong>${nombre}</strong>. Los acompañamos en espíritu.`
+        }</p>
           <button class="btn-close" onclick="closeModal()">¡Listo!</button>
         </div>
       `);

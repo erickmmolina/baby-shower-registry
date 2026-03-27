@@ -1,4 +1,19 @@
-# Mejoras propuestas — Olivo Ferrer
+# Mejoras propuestas — Matías Ignacio
+
+## Cambios realizados (Marzo 2026)
+
+### Refactor completo del sitio
+- **Renombrado** de "Olivo Ferrer" a "Matías Ignacio" en todo el sitio (HTML, JS, API, meta tags)
+- **Hero**: Nombre con fuente Great Vibes (cursiva elegante), fondo más claro, 160 estrellas
+- **Hero**: Quitados badge "Baby Shower · Abril 2026", monograma "OF" y subtítulo "Pronto llegará..."
+- **Evento en hero**: Cards de evento integradas en el hero con glassmorphism (fecha+hora, lugar, dress code)
+- **Fecha+hora fusionadas**: Una sola card con CTA "Añadir al calendario" (Google Calendar)
+- **Hora actualizada**: De 14:30 a 16:00 hrs (countdown, API y server)
+- **Sección familia+RSVP**: Banner navy con estrellas, foto familiar estilo polaroid, texto emocional y botones RSVP integrados
+- **Footer**: Créditos con link a LinkedIn del desarrollador
+- **Ola SVG**: Transición suave hero → regalos
+
+---
 
 ## Prioridad Alta (antes del evento)
 
