@@ -150,6 +150,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .chip-loc{background:rgba(110,201,169,.1);color:#8dd9be;border:1px solid rgba(110,201,169,.2)}
 .chip-code{background:rgba(201,169,110,.08);color:var(--gold);border:1px solid rgba(201,169,110,.2)}
 
+/* Countdown */
+.countdown{display:flex;gap:12px;justify-content:center;margin-top:32px;animation:fadeUp 1s cubic-bezier(.22,1,.36,1) .6s both}
+.countdown-box{background:rgba(15,30,46,.55);border:1px solid rgba(201,169,110,.2);border-radius:12px;padding:14px 18px;min-width:70px;text-align:center;backdrop-filter:blur(8px)}
+.countdown-num{display:block;font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--gold-light);line-height:1.1}
+.countdown-label{display:block;font-size:.62rem;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:rgba(247,243,237,.45);margin-top:4px}
+.countdown-done{margin-top:32px;animation:fadeUp 1s cubic-bezier(.22,1,.36,1) .6s both;font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--gold);text-align:center}
+@media(max-width:480px){
+  .countdown{gap:8px}
+  .countdown-box{padding:10px 12px;min-width:58px}
+  .countdown-num{font-size:1.4rem}
+}
+
 /* Scroll indicator */
 .hero-scroll{margin-top:56px;display:flex;flex-direction:column;align-items:center;gap:8px;animation:fadeUp 1s cubic-bezier(.22,1,.36,1) .7s both;text-decoration:none}
 .hero-scroll span{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(201,169,110,.5);transition:color .3s}
@@ -193,6 +205,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .filter-btn{padding:8px 22px;border-radius:100px;border:1px solid #d0d8e0;background:transparent;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--muted);cursor:pointer;transition:all .25s}
 .filter-btn:hover{border-color:var(--sky);color:var(--navy)}
 .filter-btn.active{background:var(--navy);border-color:var(--navy);color:var(--white)}
+
+/* SORT BUTTONS */
+.sort-buttons{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:28px}
+.sort-label{font-size:.78rem;color:var(--muted);margin-right:4px}
+.sort-btn{padding:7px 18px;border-radius:100px;border:1px solid #d0d8e0;background:transparent;font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all .25s}
+.sort-btn:hover{border-color:var(--gold);color:var(--navy)}
+.sort-btn.active{background:var(--gold);border-color:var(--gold);color:var(--white)}
+
+/* WHATSAPP BUTTON */
+.btn-wa{padding:9px 12px;border-radius:9px;background:#25d366;color:var(--white);border:none;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .2s;line-height:1}
+.btn-wa:hover{background:#1da851;transform:scale(1.04)}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;top:-10px;z-index:2000;width:8px;height:8px;opacity:1;pointer-events:none;animation:confettiFall linear forwards}
+.confetti-piece:nth-child(odd){border-radius:50%}
+.confetti-piece:nth-child(3n){width:6px;height:10px;border-radius:2px}
+@keyframes confettiFall{
+  0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}
+  80%{opacity:1}
+  100%{opacity:0;transform:translateY(100vh) rotate(720deg) scale(.4)}
+}
 
 /* GIFT GRID */
 .gift-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:24px}

@@ -61,6 +61,12 @@
       <span class="chip chip-loc">Vitacura</span>
       <span class="chip chip-code">Abrigado</span>
     </div>
+    <div class="countdown" id="countdown">
+      <div class="countdown-box"><span class="countdown-num" id="cd-days">--</span><span class="countdown-label">Días</span></div>
+      <div class="countdown-box"><span class="countdown-num" id="cd-hours">--</span><span class="countdown-label">Horas</span></div>
+      <div class="countdown-box"><span class="countdown-num" id="cd-mins">--</span><span class="countdown-label">Minutos</span></div>
+      <div class="countdown-box"><span class="countdown-num" id="cd-secs">--</span><span class="countdown-label">Segundos</span></div>
+    </div>
     <a href="#lista" class="hero-scroll"><span>Ver regalos</span><div class="scroll-line"></div></a>
   </div>
 
@@ -83,6 +89,12 @@
     <button class="filter-btn active" data-filter="all">Todos</button>
     <button class="filter-btn" data-filter="available">Disponibles</button>
     <button class="filter-btn" data-filter="reserved">Ya elegidos</button>
+  </div>
+
+  <div class="sort-buttons" id="sortButtons">
+    <span class="sort-label">Ordenar:</span>
+    <button class="sort-btn" data-sort="asc">Menor precio</button>
+    <button class="sort-btn" data-sort="desc">Mayor precio</button>
   </div>
 
   <div class="gift-grid" id="giftGrid"></div>

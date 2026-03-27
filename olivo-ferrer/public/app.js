@@ -2,6 +2,7 @@
 let gifts = [];
 let activeCat = 'all';
 let activeFilter = 'all';
+let activeSort = 'none';
 let selectedGiftId = null;
 
 const catLabels = {
@@ -27,10 +28,41 @@ const fmt = n => n.toLocaleString('es-CL');
 // ─── Init ───
 document.addEventListener('DOMContentLoaded', async () => {
   createStars();
+  startCountdown();
   setupFilterListeners();
+  setupSortListeners();
   await loadGifts();
   await loadEvent();
 });
+
+// ─── Countdown ───
+function startCountdown() {
+  const target = new Date('2025-04-25T14:30:00-03:00').getTime();
+  const container = document.getElementById('countdown');
+
+  function update() {
+    const now = Date.now();
+    const diff = target - now;
+
+    if (diff <= 0) {
+      container.outerHTML = '<div class="countdown-done">¡El gran día llegó!</div>';
+      return;
+    }
+
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+    document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+    document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+  }
+
+  update();
+  setInterval(update, 1000);
+}
 
 // ─── Celestial animations ───
 function createStars() {
@@ -112,6 +144,24 @@ function setupFilterListeners() {
   });
 }
 
+// ─── Sort listeners ───
+function setupSortListeners() {
+  document.querySelectorAll('.sort-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const sort = btn.dataset.sort;
+      if (activeSort === sort) {
+        activeSort = 'none';
+        btn.classList.remove('active');
+      } else {
+        activeSort = sort;
+        document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      renderGifts();
+    });
+  });
+}
+
 // ─── Render gift cards ───
 function renderGifts() {
   const grid = document.getElementById('giftGrid');
@@ -121,6 +171,9 @@ function renderGifts() {
     const filterOk = activeFilter === 'all' || (activeFilter === 'available' ? !isReserved : isReserved);
     return catOk && filterOk;
   });
+
+  if (activeSort === 'asc') filtered.sort((a, b) => (a.price || 0) - (b.price || 0));
+  else if (activeSort === 'desc') filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
 
   if (!filtered.length) {
     grid.innerHTML = '<div class="empty-state">No hay regalos en esta categoría</div>';
@@ -156,6 +209,7 @@ function renderGifts() {
               <button class="btn-reserve" onclick="openClaimModal(${g.id})" ${isReserved ? 'disabled' : ''}>
                 ${isReserved ? 'Elegido' : 'Elegir'}
               </button>
+              ${g.link1 && !isReserved ? `<a class="btn-wa" href="https://wa.me/?text=${encodeURIComponent(`Mira este regalo para el Baby Shower de Olivo: ${g.name}${g.price ? ` - $${fmt(g.price)}` : ''} 👉 ${g.link1}`)}" target="_blank" rel="noopener" title="Compartir por WhatsApp">WA</a>` : ''}
             </div>
           </div>
         </div>
@@ -264,6 +318,8 @@ async function confirmClaim() {
       if (idx >= 0) gifts[idx] = data.gift;
       renderGifts();
 
+      launchConfetti();
+
       openModal(`
         <div class="success-modal">
           <div class="success-icon">✓</div>
@@ -282,6 +338,28 @@ async function confirmClaim() {
     btn.disabled = false;
     btn.textContent = 'Reservar';
   }
+}
+
+// ─── Confetti ───
+function launchConfetti() {
+  const colors = ['#c9a96e', '#4a90d9', '#6ec9a9', '#f7f3ed'];
+  const container = document.createElement('div');
+  container.className = 'confetti-container';
+  container.style.cssText = 'position:fixed;inset:0;z-index:2000;pointer-events:none;overflow:hidden';
+  document.body.appendChild(container);
+
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const left = Math.random() * 100;
+    const delay = Math.random() * 0.8;
+    const duration = 2 + Math.random() * 1.5;
+    piece.style.cssText = `left:${left}%;background:${color};animation-duration:${duration}s;animation-delay:${delay}s`;
+    container.appendChild(piece);
+  }
+
+  setTimeout(() => container.remove(), 4000);
 }
 
 function showFieldError(msg) {
