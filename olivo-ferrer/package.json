@@ -1,14 +1,18 @@
 {
-  "name": "baby-shower-olivo-ferrer",
+  "name": "baby-shower-matias-ignacio",
   "version": "1.0.0",
-  "description": "Lista de regalos y RSVP - Baby Shower Olivo Ferrer",
+  "description": "Lista de regalos y RSVP - Baby Shower Matías Ignacio",
   "type": "module",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"
   },
-  "keywords": ["baby shower", "registry", "gifts"],
+  "keywords": [
+    "baby shower",
+    "registry",
+    "gifts"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
