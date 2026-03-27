@@ -32,15 +32,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadEvent();
 });
 
-// ─── Stars animation ───
+// ─── Celestial animations ───
 function createStars() {
   const sl = document.getElementById('starsLayer');
-  for (let i = 0; i < 55; i++) {
+
+  // Layered star field — dim distant stars + bright near stars
+  for (let i = 0; i < 90; i++) {
     const s = document.createElement('div');
-    s.className = 'star';
-    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*4}s;animation-delay:-${Math.random()*5}s;width:${Math.random()<.3?4:2}px;height:${Math.random()<.3?4:2}px`;
+    const isBright = Math.random() < .15;
+    const isBlue = Math.random() < .2;
+    const size = isBright ? 2 + Math.random() * 2 : 1 + Math.random();
+    s.className = `star${isBright ? ' star--bright' : ''}${isBlue ? ' star--blue' : ''}`;
+    s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${2+Math.random()*5}s;animation-delay:-${Math.random()*6}s;width:${size}px;height:${size}px`;
     sl.appendChild(s);
   }
+
+  // Shooting stars
+  createShootingStars();
+}
+
+function createShootingStars() {
+  const container = document.getElementById('shootingStars');
+  function launchStar() {
+    const star = document.createElement('div');
+    star.className = 'shooting-star';
+    star.style.cssText = `top:${5+Math.random()*40}%;left:${10+Math.random()*60}%;animation:shoot ${.8+Math.random()*.6}s ease-out forwards`;
+    container.appendChild(star);
+    star.addEventListener('animationend', () => star.remove());
+    setTimeout(launchStar, 3000 + Math.random() * 6000);
+  }
+  setTimeout(launchStar, 2000);
+  setTimeout(launchStar, 5000);
 }
 
 // ─── Load gifts from API ───
