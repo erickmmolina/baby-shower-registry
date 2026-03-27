@@ -213,9 +213,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 .sort-btn:hover{border-color:var(--gold);color:var(--navy)}
 .sort-btn.active{background:var(--gold);border-color:var(--gold);color:var(--white)}
 
-/* WHATSAPP BUTTON */
-.btn-wa{padding:9px 12px;border-radius:9px;background:#25d366;color:var(--white);border:none;font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .2s;line-height:1}
-.btn-wa:hover{background:#1da851;transform:scale(1.04)}
+/* SHARE BUTTON */
+.btn-share{padding:9px 12px;border-radius:9px;background:transparent;color:var(--muted);border:1px solid #d0d8e0;cursor:pointer;transition:all .2s;line-height:1;display:inline-flex;align-items:center}
+.btn-share:hover{border-color:var(--sky);color:var(--sky);transform:scale(1.04)}
 
 /* CONFETTI */
 .confetti-piece{position:fixed;top:-10px;z-index:2000;width:8px;height:8px;opacity:1;pointer-events:none;animation:confettiFall linear forwards}

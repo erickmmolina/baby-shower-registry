@@ -281,7 +281,7 @@ app.get('/api/event', async (req, res) => {
             if (data) return res.json(JSON.parse(data));
         }
         res.json({
-            date: 'Sábado 25 de Abril, 2025',
+            date: 'Sábado 25 de Abril, 2026',
             time: '14:30 - 18:00 hrs',
             location: 'Quincho Edificio Quillay',
             address: 'Av. Club del Campo 172, Vitacura',

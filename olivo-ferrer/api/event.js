@@ -1,7 +1,7 @@
 import { getRedis, key, cors } from './_helpers.js';
 
 const defaultEvent = {
-  date: 'Sábado 25 de Abril, 2025',
+  date: 'Sábado 25 de Abril, 2026',
   time: '14:30 - 18:00 hrs',
   location: 'Quincho Edificio Quillay',
   address: 'Av. Club del Campo 172, Vitacura',

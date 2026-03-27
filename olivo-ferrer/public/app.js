@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // ─── Countdown ───
 function startCountdown() {
-  const target = new Date('2025-04-25T14:30:00-03:00').getTime();
+  const target = new Date('2026-04-25T14:30:00-04:00').getTime();
   const container = document.getElementById('countdown');
 
   function update() {
@@ -209,7 +209,7 @@ function renderGifts() {
               <button class="btn-reserve" onclick="openClaimModal(${g.id})" ${isReserved ? 'disabled' : ''}>
                 ${isReserved ? 'Elegido' : 'Elegir'}
               </button>
-              ${g.link1 && !isReserved ? `<a class="btn-wa" href="https://wa.me/?text=${encodeURIComponent(`Mira este regalo para el Baby Shower de Olivo: ${g.name}${g.price ? ` - $${fmt(g.price)}` : ''} 👉 ${g.link1}`)}" target="_blank" rel="noopener" title="Compartir por WhatsApp">WA</a>` : ''}
+              ${g.link1 && !isReserved ? `<button class="btn-share" onclick="shareGift(${g.id})" title="Compartir"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></button>` : ''}
             </div>
           </div>
         </div>
@@ -360,6 +360,22 @@ function launchConfetti() {
   }
 
   setTimeout(() => container.remove(), 4000);
+}
+
+// ─── Share gift ───
+async function shareGift(id) {
+  const g = gifts.find(x => x.id === id);
+  if (!g) return;
+  const text = `Mira este regalo para el Baby Shower de Olivo: ${g.name}${g.price ? ` - $${fmt(g.price)}` : ''}`;
+  const url = g.link1;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'Baby Shower Olivo Ferrer', text, url });
+    } catch (e) { /* user cancelled */ }
+  } else {
+    window.open(`https://wa.me/?text=${encodeURIComponent(text + ' 👉 ' + url)}`, '_blank');
+  }
 }
 
 function showFieldError(msg) {
