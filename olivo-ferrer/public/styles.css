@@ -69,36 +69,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
   100%{opacity:0;transform:rotate(-35deg) translateX(400px)}
 }
 
-/* Crescent moon */
+/* Crescent moon — SVG rendered by moon.js */
 .moon{
-  position:absolute;top:8%;right:12%;width:100px;height:100px;pointer-events:none;
+  position:absolute;top:5%;right:8%;width:150px;height:150px;pointer-events:none;z-index:1;
   animation:moonFloat 8s ease-in-out infinite;
 }
-.moon::before{
-  content:'';position:absolute;inset:0;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold-light) 10%,var(--gold) 90%);
-  box-shadow:0 0 40px 10px rgba(201,169,110,.2),0 0 80px 30px rgba(201,169,110,.1),inset -4px -2px 6px rgba(180,150,80,.4);
-}
-.moon::after{
-  content:'';position:absolute;top:-4px;right:-4px;width:82px;height:82px;border-radius:50%;
-  background:linear-gradient(170deg,#0a1520 0%,#0c1a2a 100%);
-}
-.moon-glow{
-  position:absolute;inset:-60px;border-radius:50%;
-  background:radial-gradient(circle,rgba(201,169,110,.12) 0%,rgba(201,169,110,.04) 40%,transparent 70%);
-  animation:moonGlow 4s ease-in-out infinite alternate;
-}
 @keyframes moonFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-@keyframes moonGlow{0%{opacity:.7;transform:scale(1)}100%{opacity:1;transform:scale(1.08)}}
-
-/* Olive branches */
-.olive-branch{
-  position:absolute;height:55%;pointer-events:none;opacity:.7;
-  animation:branchSway 12s ease-in-out infinite;
-}
-.olive-left{left:-10px;top:15%;transform-origin:bottom center}
-.olive-right{right:-10px;top:10%;transform-origin:bottom center;animation-delay:-6s}
-@keyframes branchSway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(1.5deg)}}
 
 /* Hero content container */
 .hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
@@ -189,16 +165,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);
 
 /* ═══ Responsive hero ═══ */
 @media(max-width:768px){
-  .moon{width:70px;height:70px;top:5%;right:5%}
-  .olive-branch{height:40%;opacity:.5}
-  .olive-left{left:-20px}
-  .olive-right{right:-20px}
+  .moon{width:100px;height:100px;top:5%;right:5%}
   .hero{padding:60px 20px 120px}
   .hero-monogram{width:90px;height:90px;font-size:2.2rem}
 }
 @media(max-width:480px){
-  .moon{width:55px;height:55px;top:4%;right:4%}
-  .olive-branch{display:none}
+  .moon{width:70px;height:70px;top:4%;right:4%}
   .hero{padding:50px 16px 100px}
 }
 
